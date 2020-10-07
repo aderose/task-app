@@ -1,2 +1,1 @@
-console.log("Working!");
-console.log("Test");
+console.log("Test - Running");
