@@ -57,14 +57,16 @@ form input {
 }
 
 form input[type="text"] {
-  width: 70%;
+  width: 75.5%;
 }
 
 form input[type="submit"] {
   background-color: var(--main-color);
   color: var(--clean-color);
   font-weight: 700;
-  width: 20%;
+  font-size: 0.85em;
+  padding: 0.69em 0;
+  width: 23%;
 }
 
 form input:focus {
@@ -74,7 +76,7 @@ form input:focus {
 /* task list styling */
 
 .tasks-container {
-  width: 100%;
+  width: 90%;
   margin: 0 auto;
 }
 
