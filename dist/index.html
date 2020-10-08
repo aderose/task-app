@@ -4,9 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Todo App</title>
+    <title>Task Manager</title>
   </head>
   <body>
+    <header>
+      <h1>TASKS</h1>
+    </header>
+    <main class="tasks-container">
+      <h2>My First Task List</h2>
+      <form>
+        <input type="text" name="add" id="add" autocomplete="off" />
+        <input type="submit" value="Submit" />
+      </form>
+      <ul class="todo-list">
+        <li>one</li>
+        <li>two</li>
+        <li>three</li>
+      </ul>
+    </main>
     <script src="main.js"></script>
   </body>
 </html>

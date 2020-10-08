@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap");
+
+/* General boilerplate and theme */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --main-color: #62adab;
+  --secondary-color: #eee;
+  --main-shadow: rgba(0, 0, 0, 0.1);
+  --header-shadow: #63a09e7c;
+  --clean-color: white;
+}
+
+body {
+  background-color: var(--secondary-color);
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+}
+
+/* header styling */
+
+header {
+  background-color: var(--main-color);
+  color: var(--secondary-color);
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  box-shadow: 0px 20px var(--header-shadow);
+  padding: 2em 0;
+  margin-bottom: 3em;
+}
+
+header h1 {
+  letter-spacing: 5px;
+  text-shadow: 2px 2px 2px var(--main-shadow);
+}
+
+/* Task input styling */
+
+h2 {
+  color: var(--main-color);
+}
+
+form {
+  margin: 1.5em 0;
+}
+
+form input {
+  padding: 0.5em;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 3px;
+}
+
+form input[type="text"] {
+  width: 70%;
+}
+
+form input[type="submit"] {
+  background-color: var(--main-color);
+  color: var(--clean-color);
+  font-weight: 700;
+  width: 20%;
+}
+
+form input:focus {
+  outline: none;
+}
+
+/* task list styling */
+
+.tasks-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+}
+
+li {
+  background-color: var(--clean-color);
+  margin: 0.5em 0;
+  padding: 0.5em;
+  box-shadow: 2px 2px 2px var(--main-shadow);
+}
