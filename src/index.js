@@ -1,14 +1,7 @@
-import taskManager from "./taskManager.js";
-import Task from "./Task.js";
+import inputHandler from "./inputHandler";
 
-const task = new Task(0, "", "", "", "Medium", false);
+window.addEventListener("load", handleDocument);
 
-console.log(task);
-
-taskManager.addTask(task);
-
-console.log(taskManager.getTasks());
-
-taskManager.removeTask(task);
-
-console.log(taskManager.getTasks());
+function handleDocument() {
+  inputHandler(document);
+}
