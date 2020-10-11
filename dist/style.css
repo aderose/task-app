@@ -11,6 +11,7 @@
   --main-color: #62adab;
   --secondary-color: #eee;
   --main-shadow: rgba(0, 0, 0, 0.1);
+  --shade-text: rgba(0, 0, 0, 0.4);
   --clean-color: white;
   --priority-high: rgba(255, 0, 0, 0.5);
   --priority-medium: rgba(255, 153, 0, 0.5);
@@ -44,12 +45,12 @@ header h1 {
 
 h2 {
   color: var(--main-color);
-  text-shadow: 2px 2px 0 var(--main-shadow);
 }
 
 .list-container {
   width: 90%;
   margin: 0 auto;
+  max-width: 400px;
 }
 
 .list-header {
@@ -59,10 +60,15 @@ h2 {
 }
 
 .list-header i {
-  font-size: 1.5em;
+  font-size: 1.7em;
   color: var(--main-color);
   filter: drop-shadow(2px 2px 0px var(--main-shadow));
   margin: 0.75em 0;
+  cursor: pointer;
+}
+
+.list-header i:hover {
+  filter: brightness(115%) drop-shadow(2px 2px 0px var(--main-shadow));
 }
 
 ul {
@@ -72,37 +78,77 @@ ul {
 }
 
 li {
-  padding: 0.75em 0;
+  padding: 0 0.75em;
   margin: 0.4em 0;
   background-color: var(--clean-color);
   box-shadow: 0 0 4px var(--main-shadow);
   border-radius: 5px;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 /* task container */
 
-input[type="checkbox"] {
-  margin: 0 0.5em;
+.task {
+  cursor: pointer;
 }
 
-.task-title {
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75em 0;
+}
+
+.task-text {
   word-break: break-all;
+  padding-bottom: 0.75em;
+}
+
+.deadline {
+  color: var(--shade-text);
+  font-size: 0.8em;
+}
+
+.controls i {
+  color: var(--main-color);
+  font-size: 1.2em;
+  margin-left: 0.5em;
+  cursor: pointer;
+}
+
+.controls i:hover {
+  filter: brightness(115%);
+}
+
+.controls button {
+  background-color: transparent;
+  border: none;
+}
+
+.controls button:focus {
+  outline: none;
+}
+
+.controls {
+  opacity: 0;
+  transition: opacity 0.3s;
+  margin: auto 0;
+}
+
+.task:hover .controls {
+  opacity: 1;
 }
 
 .high-priority {
   border-bottom: 5px solid var(--priority-high);
-  /* background-color: var(--priority-high); */
 }
 
 .medium-priority {
   border-bottom: 5px solid var(--priority-medium);
-  /* background-color: var(--priority-medium); */
 }
 
 .low-priority {
   border-bottom: 5px solid var(--priority-low);
-  /* background-color: var(--priority-low); */
 }
