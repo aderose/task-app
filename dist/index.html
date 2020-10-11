@@ -4,22 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
     <title>Task Manager</title>
   </head>
   <body>
     <header>
       <h1>TASKS</h1>
     </header>
-    <main class="tasks-container">
-      <h2>My First Task List</h2>
-      <form>
-        <input type="text" name="add" id="add" autocomplete="off" />
-        <input type="submit" value="Submit" />
-      </form>
-      <ul class="todo-list">
-        <li>one</li>
-        <li>two</li>
-        <li>three</li>
+    <main class="list-container">
+      <div class="list-header">
+        <h2>Task List 1</h2>
+        <i class="fas fa-plus-circle"></i>
+      </div>
+      <ul>
+        <li class="task high-priority">
+          <input type="checkbox" />
+          <div class="task-title">qwiifoqwediqjefi</div>
+        </li>
+        <li class="task medium-priority">
+          <input type="checkbox" />
+          <div class="task-title">two</div>
+        </li>
+        <li class="task low-priority">
+          <input type="checkbox" />
+          <div class="task-title">three</div>
+        </li>
       </ul>
     </main>
     <script src="main.js"></script>

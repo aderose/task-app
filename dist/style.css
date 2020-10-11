@@ -12,11 +12,13 @@
   --secondary-color: #eee;
   --main-shadow: rgba(0, 0, 0, 0.1);
   --clean-color: white;
+  --priority-high: rgba(255, 0, 0, 0.5);
+  --priority-medium: rgba(255, 153, 0, 0.5);
+  --priority-low: rgba(4, 129, 4, 0.5);
 }
 
 body {
   background-color: var(--secondary-color);
-  text-align: center;
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
 }
@@ -30,7 +32,7 @@ header {
   border-bottom-right-radius: 50%;
   box-shadow: 0px 8px var(--main-shadow);
   padding: 2em 0;
-  margin-bottom: 2em;
+  text-align: center;
 }
 
 header h1 {
@@ -38,46 +40,29 @@ header h1 {
   text-shadow: 2px 2px 2px var(--main-shadow);
 }
 
-/* Task input styling */
+/* Task list container styling */
 
 h2 {
   color: var(--main-color);
+  text-shadow: 2px 2px 0 var(--main-shadow);
 }
 
-form {
-  margin: 1.5em 0;
-}
-
-form input {
-  padding: 0.5em;
-  border: none;
-  font-family: inherit;
-  font-size: inherit;
-  border-radius: 3px;
-}
-
-form input[type="text"] {
-  width: 75.5%;
-}
-
-form input[type="submit"] {
-  background-color: var(--main-color);
-  color: var(--clean-color);
-  font-weight: 700;
-  font-size: 0.85em;
-  padding: 0.69em 0;
-  width: 23%;
-}
-
-form input:focus {
-  outline: none;
-}
-
-/* task list styling */
-
-.tasks-container {
+.list-container {
   width: 90%;
   margin: 0 auto;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-header i {
+  font-size: 1.5em;
+  color: var(--main-color);
+  filter: drop-shadow(2px 2px 0px var(--main-shadow));
+  margin: 0.75em 0;
 }
 
 ul {
@@ -87,8 +72,37 @@ ul {
 }
 
 li {
+  padding: 0.75em 0;
+  margin: 0.4em 0;
   background-color: var(--clean-color);
-  margin: 0.5em 0;
-  padding: 0.5em;
-  box-shadow: 2px 2px 2px var(--main-shadow);
+  box-shadow: 0 0 4px var(--main-shadow);
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* task container */
+
+input[type="checkbox"] {
+  margin: 0 0.5em;
+}
+
+.task-title {
+  word-break: break-all;
+}
+
+.high-priority {
+  border-bottom: 5px solid var(--priority-high);
+  /* background-color: var(--priority-high); */
+}
+
+.medium-priority {
+  border-bottom: 5px solid var(--priority-medium);
+  /* background-color: var(--priority-medium); */
+}
+
+.low-priority {
+  border-bottom: 5px solid var(--priority-low);
+  /* background-color: var(--priority-low); */
 }
