@@ -196,7 +196,8 @@ select {
 }
 
 select:focus,
-input:focus {
+input:focus,
+.form-action:focus {
   outline: none;
 }
 
@@ -209,7 +210,7 @@ label {
   justify-content: space-between;
 }
 
-.submission input {
+.submission .form-action {
   margin-bottom: 0;
   width: 40%;
   color: var(--clean-color);
