@@ -57,7 +57,11 @@
           <label for="title">Task</label>
           <input type="text" name="title" id="title" autocomplete="off" />
           <label for="date">Due Date</label>
-          <input type="date" name="date" id="date" />
+          <input
+            type="datetime-local"
+            name="datetime-local"
+            id="datetime-local"
+          />
           <label for="priority">Priority</label>
           <select name="priority" id="priority">
             <option value="high">High</option>
@@ -66,7 +70,9 @@
           </select>
           <div class="submission">
             <input class="form-action" type="submit" value="Add" id="add" />
-            <button class="form-action" type="button">Cancel</button>
+            <button class="form-action" type="button" id="cancel">
+              Cancel
+            </button>
           </div>
         </form>
       </div>
