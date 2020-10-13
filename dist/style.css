@@ -152,3 +152,79 @@ li {
 .low-priority {
   border-bottom: 5px solid var(--priority-low);
 }
+
+/* Form */
+
+.form-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--secondary-color);
+  opacity: 0;
+  pointer-events: none;
+}
+
+form {
+  background-color: var(--clean-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1em;
+  border-radius: 5px;
+  width: 90%;
+  max-width: 400px;
+}
+
+form * {
+  width: 100%;
+}
+
+input,
+select {
+  margin-bottom: 2em;
+  font-family: inherit;
+  padding: 0.5em;
+  border: none;
+  background-color: var(--secondary-color);
+  border-radius: 5px;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+}
+
+label {
+  margin-bottom: 0.2em;
+}
+
+.submission {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submission input {
+  margin-bottom: 0;
+  width: 40%;
+  color: var(--clean-color);
+  background: var(--main-color);
+  border: none;
+  padding: 0.25em;
+  border-radius: 3px;
+}
+
+.form-container h2 {
+  margin-bottom: 1em;
+}
+
+.visible {
+  transition: opacity 0.3s;
+  opacity: 1;
+  pointer-events: auto;
+}
