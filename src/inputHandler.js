@@ -2,28 +2,31 @@ import pubsub from "./pubsub";
 
 // handle form input provided by the user
 const inputHandler = (doc) => {
-  doc.querySelector(".add").addEventListener("click", toggleForm);
-
+  const formContainer = doc.querySelector(".form-container");
   const form = doc.querySelector("form");
+  const add = doc.querySelector(".add");
+  const cancel = doc.querySelector("#cancel");
+
+  [add, cancel].forEach((btn) => btn.addEventListener("click", toggleForm));
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     gatherInput(form);
     toggleForm();
+    form.reset();
   });
-
-  doc.querySelector("#cancel").addEventListener("click", toggleForm);
 
   function gatherInput(form) {
     const formData = new FormData(form);
     pubsub.publish("addTask", {
       title: formData.get("title"),
-      date: formData.get("datetime-local"),
+      datetime: formData.get("datetime-local"),
       priority: formData.get("priority"),
     });
   }
 
   function toggleForm() {
-    doc.querySelector(".form-container").classList.toggle("visible");
+    formContainer.classList.toggle("visible");
   }
 };
 
