@@ -8,7 +8,7 @@ class TaskElement {
     const element = this.doc.createElement(elementType);
     if (classes) classes.forEach((c) => element.classList.add(c));
     if (innerText) element.textContent = innerText;
-    if (id) element.id = id;
+    if (id !== undefined) element.id = id;
     return element;
   }
 

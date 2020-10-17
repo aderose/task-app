@@ -7,8 +7,6 @@ const taskManager = (doc) => {
 
   pubsub.subscribe("addTask", addTask);
 
-  const getTaskIndexById = (task) => _tasks.findIndex((x) => x.id === task.id);
-
   function addTask(task) {
     _tasks.push(
       new Task(_tasks.length, task.title, task.datetime, task.priority, false)
@@ -16,6 +14,7 @@ const taskManager = (doc) => {
     renderTasks();
   }
 
+  const getTaskIndexById = (task) => _tasks.findIndex((x) => x.id === task.id);
   const removeTask = (task) => _tasks.splice(getTaskIndexById(task), 1);
 
   const renderTasks = () => {
