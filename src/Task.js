@@ -1,4 +1,4 @@
-import TaskElement from "./TaskElement";
+import taskElement from "./taskElement";
 
 class Task {
   constructor(id, title, dueDate, priority, isComplete) {
@@ -49,8 +49,8 @@ class Task {
     return this._isComplete;
   }
 
-  getElement(doc) {
-    return new TaskElement(doc, this).getTaskElement();
+  getElement() {
+    return taskElement.createElement(this);
   }
 }
 

@@ -19,7 +19,7 @@ const taskManager = (doc) => {
 
   const renderTasks = () => {
     _container.innerHTML = "";
-    _tasks.forEach((task) => _container.appendChild(task.getElement(doc)));
+    _tasks.forEach((task) => _container.appendChild(task.getElement()));
   };
 
   return { addTask, removeTask, renderTasks };
