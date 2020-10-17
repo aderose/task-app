@@ -9,15 +9,9 @@ const taskManager = (doc) => {
 
   const getTaskIndexById = (task) => _tasks.findIndex((x) => x.id === task.id);
 
-  function addTask(newTask) {
+  function addTask(task) {
     _tasks.push(
-      new Task(
-        _tasks.length,
-        newTask.title,
-        newTask.datetime,
-        newTask.priority,
-        false
-      )
+      new Task(_tasks.length, task.title, task.datetime, task.priority, false)
     );
     renderTasks();
   }
