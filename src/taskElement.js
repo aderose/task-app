@@ -1,3 +1,5 @@
+import pubsub from "./pubsub";
+
 const taskElement = ((doc) => {
   // create html tag of provided type, given attributes and containing provided
   // textContent
@@ -26,6 +28,10 @@ const taskElement = ((doc) => {
     const trash = _createTag("button");
     const trashImg = _createTag("i", { class: "far fa-trash-alt" });
     const taskText = _createTag("div", { class: "task-text" }, task.title);
+
+    trash.addEventListener("click", () => {
+      pubsub.publish("removeTask", task);
+    });
 
     // combine sub-elements to create the task element
     edit.appendChild(editImg);

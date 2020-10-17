@@ -3,18 +3,24 @@ import Task from "./Task";
 
 const taskManager = (container) => {
   const _tasks = [];
+  let taskId = 0;
 
   pubsub.subscribe("addTask", addTask);
+  pubsub.subscribe("removeTask", removeTask);
 
   function addTask(task) {
     _tasks.push(
-      new Task(_tasks.length, task.title, task.datetime, task.priority, false)
+      new Task(taskId++, task.title, task.datetime, task.priority, false)
     );
     renderTasks();
   }
 
+  function removeTask(task) {
+    _tasks.splice(getTaskIndexById(task), 1);
+    renderTasks();
+  }
+
   const getTaskIndexById = (task) => _tasks.findIndex((x) => x.id === task.id);
-  const removeTask = (task) => _tasks.splice(getTaskIndexById(task), 1);
 
   const renderTasks = () => {
     container.innerHTML = "";
