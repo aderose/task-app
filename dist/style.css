@@ -195,6 +195,11 @@ select {
   border-radius: 5px;
 }
 
+input:hover,
+select:hover {
+  filter: brightness(95%);
+}
+
 select:focus,
 input:focus,
 .form-action:focus {
@@ -218,6 +223,11 @@ label {
   border: none;
   padding: 0.25em;
   border-radius: 3px;
+  cursor: pointer;
+}
+
+.submission .form-action:hover {
+  filter: brightness(110%);
 }
 
 .form-container h2 {
