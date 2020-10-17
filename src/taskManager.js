@@ -1,9 +1,8 @@
 import pubsub from "./pubsub";
 import Task from "./Task";
 
-const taskManager = (doc) => {
+const taskManager = (container) => {
   const _tasks = [];
-  const _container = doc.querySelector("ul");
 
   pubsub.subscribe("addTask", addTask);
 
@@ -18,8 +17,8 @@ const taskManager = (doc) => {
   const removeTask = (task) => _tasks.splice(getTaskIndexById(task), 1);
 
   const renderTasks = () => {
-    _container.innerHTML = "";
-    _tasks.forEach((task) => _container.appendChild(task.getElement()));
+    container.innerHTML = "";
+    _tasks.forEach((task) => container.appendChild(task.element));
   };
 
   return { addTask, removeTask, renderTasks };

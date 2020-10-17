@@ -7,6 +7,7 @@ class Task {
     this.dueDate = dueDate || "";
     this.priority = priority || "Low";
     this.isComplete = isComplete || false;
+    this.element = taskElement.createElement(this);
   }
 
   set id(id) {
@@ -49,8 +50,12 @@ class Task {
     return this._isComplete;
   }
 
-  getElement() {
-    return taskElement.createElement(this);
+  set element(element) {
+    this._element = element;
+  }
+
+  get element() {
+    return this._element;
   }
 }
 

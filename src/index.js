@@ -5,5 +5,5 @@ window.addEventListener("load", handleDocument);
 
 function handleDocument() {
   inputHandler(document);
-  taskManager(document);
+  taskManager(document.querySelector("ul"));
 }
