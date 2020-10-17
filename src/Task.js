@@ -1,10 +1,11 @@
+import TaskElement from "./TaskElement";
+
 class Task {
-  constructor(id, title, description, dueDate, priority, isComplete) {
+  constructor(id, title, dueDate, priority, isComplete) {
     this.id = id;
     this.title = title || "";
-    this.description = description || "";
     this.dueDate = dueDate || "";
-    this.priority = priority || "Medium";
+    this.priority = priority || "Low";
     this.isComplete = isComplete || false;
   }
 
@@ -22,14 +23,6 @@ class Task {
 
   get title() {
     return this._title;
-  }
-
-  set description(description) {
-    this._description = description;
-  }
-
-  get description() {
-    return this._description;
   }
 
   set dueDate(dueDate) {
@@ -54,6 +47,10 @@ class Task {
 
   get isComplete() {
     return this._isComplete;
+  }
+
+  getElement(doc) {
+    return new TaskElement(doc, this).getTaskElement();
   }
 }
 

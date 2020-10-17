@@ -1,4 +1,5 @@
 import pubsub from "./pubsub";
+import Task from "./Task";
 
 const taskManager = (doc) => {
   const _tasks = [];
@@ -8,8 +9,16 @@ const taskManager = (doc) => {
 
   const getTaskIndexById = (task) => _tasks.findIndex((x) => x.id === task.id);
 
-  function addTask(task) {
-    _tasks.push(task);
+  function addTask(newTask) {
+    _tasks.push(
+      new Task(
+        _tasks.length,
+        newTask.title,
+        newTask.datetime,
+        newTask.priority,
+        false
+      )
+    );
     renderTasks();
   }
 
@@ -17,40 +26,7 @@ const taskManager = (doc) => {
 
   const renderTasks = () => {
     _container.innerHTML = "";
-    _tasks.forEach((task) => _container.appendChild(makeTask(task)));
-  };
-
-  const makeTask = (task) => {
-    const taskElement = makeElement("li", [
-      "task",
-      `${task.priority}-priority`,
-    ]);
-    const header = makeElement("div", ["task-header"]);
-    const deadline = makeElement("div", ["deadline"], task.datetime);
-    const controls = makeElement("div", ["controls"]);
-    const edit = makeElement("button");
-    const editImg = makeElement("i", ["far", "fa-edit"]);
-    const trash = makeElement("button");
-    const trashImg = makeElement("i", ["far", "fa-trash-alt"]);
-    const taskText = makeElement("div", ["task-text"], task.title);
-
-    edit.appendChild(editImg);
-    trash.appendChild(trashImg);
-    controls.appendChild(edit);
-    controls.appendChild(trash);
-    header.appendChild(deadline);
-    header.appendChild(controls);
-    taskElement.appendChild(header);
-    taskElement.appendChild(taskText);
-
-    return taskElement;
-  };
-
-  const makeElement = (name, classes, text) => {
-    const element = doc.createElement(name);
-    if (classes) classes.forEach((c) => element.classList.add(c));
-    if (text) element.textContent = text;
-    return element;
+    _tasks.forEach((task) => _container.appendChild(task.getElement(doc)));
   };
 
   return { addTask, removeTask, renderTasks };
