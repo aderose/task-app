@@ -13,6 +13,7 @@ const taskElement = ((doc) => {
     return element;
   };
 
+  // create the task list element
   const createElement = (task) => {
     const element = _createTag("li", {
       id: task.id,
@@ -29,9 +30,9 @@ const taskElement = ((doc) => {
     const trashImg = _createTag("i", { class: "far fa-trash-alt" });
     const taskText = _createTag("div", { class: "task-text" }, task.title);
 
-    trash.addEventListener("click", () => {
-      pubsub.publish("removeTask", task);
-    });
+    // publish respective events when trash and edit buttons are clicked
+    edit.addEventListener("click", () => pubsub.publish("editTask", task));
+    trash.addEventListener("click", () => pubsub.publish("removeTask", task));
 
     // combine sub-elements to create the task element
     edit.appendChild(editImg);
