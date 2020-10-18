@@ -5,10 +5,10 @@ const inputHandler = (doc) => {
   const formContainer = doc.querySelector(".form-container");
   const form = doc.querySelector("form");
   const add = doc.querySelector(".add");
-  const update = doc.querySelector(".update");
   const cancel = doc.querySelector("#cancel");
 
-  pubsub.subscribe("editTask", editTask);
+  pubsub.subscribe("createEditListener", editListener);
+  pubsub.subscribe("createDeleteListener", trashListener);
 
   [add, cancel].forEach((btn) => btn.addEventListener("click", toggleForm));
 
@@ -19,12 +19,22 @@ const inputHandler = (doc) => {
     form.reset();
   });
 
+  function trashListener({ task, trash }) {
+    trash.addEventListener("click", (e) => {
+      pubsub.publish("removeTask", task);
+    });
+  }
+
+  function editListener({ task, edit }) {
+    edit.addEventListener("click", (e) => {
+      pubsub.publish("editForm", task);
+    });
+  }
+
   function editTask(task) {
     form["title"].value = task.title;
     form["datetime-local"].value = task.dueDate;
     form["priority"].value = task.priority;
-    // edit the form title
-    // edit the form add button to update
     toggleForm();
   }
 

@@ -13,7 +13,7 @@ const taskElement = ((doc) => {
     return element;
   };
 
-  const _createControls = () => {
+  const _createControls = (task) => {
     // create individual control elements
     const controls = _createTag("div", { class: "controls" });
     const edit = _createTag("button").appendChild(
@@ -24,8 +24,8 @@ const taskElement = ((doc) => {
     );
 
     // call for click listeners to be added to the control buttons
-    pubsub.publish("createEditListener", edit);
-    pubsub.publish("createDeleteListener", trash);
+    pubsub.publish("createEditListener", { task, edit });
+    pubsub.publish("createDeleteListener", { task, trash });
 
     // append buttons to controls
     controls.appendChild(edit);
@@ -39,7 +39,7 @@ const taskElement = ((doc) => {
 
     // append deadline and controls to header
     header.appendChild(_createTag("div", { class: "deadline" }, task.dueDate));
-    header.appendChild(_createControls());
+    header.appendChild(_createControls(task));
 
     return header;
   };
