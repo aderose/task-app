@@ -13,36 +13,47 @@ const taskElement = ((doc) => {
     return element;
   };
 
-  // create the task list element
+  const _createControls = () => {
+    // create individual control elements
+    const controls = _createTag("div", { class: "controls" });
+    const edit = _createTag("button").appendChild(
+      _createTag("i", { class: "far fa-edit" })
+    );
+    const trash = _createTag("button").appendChild(
+      _createTag("i", { class: "far fa-trash-alt" })
+    );
+
+    // call for click listeners to be added to the control buttons
+    pubsub.publish("createEditListener", edit);
+    pubsub.publish("createDeleteListener", trash);
+
+    // append buttons to controls
+    controls.appendChild(edit);
+    controls.appendChild(trash);
+
+    return controls;
+  };
+
+  const _createHeader = (task) => {
+    const header = _createTag("div", { class: "task-header" });
+
+    // append deadline and controls to header
+    header.appendChild(_createTag("div", { class: "deadline" }, task.dueDate));
+    header.appendChild(_createControls());
+
+    return header;
+  };
+
   const createElement = (task) => {
+    // create the task list element with the correct id and priority
     const element = _createTag("li", {
       id: task.id,
       class: `task ${task.priority}-priority`,
     });
 
-    // create sub-elements to populate task element
-    const header = _createTag("div", { class: "task-header" });
-    const deadline = _createTag("div", { class: "deadline" }, task.dueDate);
-    const controls = _createTag("div", { class: "controls" });
-    const edit = _createTag("button");
-    const editImg = _createTag("i", { class: "far fa-edit" });
-    const trash = _createTag("button");
-    const trashImg = _createTag("i", { class: "far fa-trash-alt" });
-    const taskText = _createTag("div", { class: "task-text" }, task.title);
-
-    // publish respective events when trash and edit buttons are clicked
-    edit.addEventListener("click", () => pubsub.publish("editTask", task));
-    trash.addEventListener("click", () => pubsub.publish("removeTask", task));
-
-    // combine sub-elements to create the task element
-    edit.appendChild(editImg);
-    trash.appendChild(trashImg);
-    controls.appendChild(edit);
-    controls.appendChild(trash);
-    header.appendChild(deadline);
-    header.appendChild(controls);
-    element.appendChild(header);
-    element.appendChild(taskText);
+    // populate element with a header and title
+    element.appendChild(_createHeader(task));
+    element.appendChild(_createTag("div", { class: "task-text" }, task.title));
 
     return element;
   };
