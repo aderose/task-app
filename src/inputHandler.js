@@ -1,23 +1,29 @@
 import pubsub from "./pubsub";
 
-// handle form input provided by the user
+// handle all document event listeners
 const inputHandler = (doc) => {
-  const formContainer = doc.querySelector(".form-container");
-  const form = doc.querySelector("form");
-  const add = doc.querySelector(".add");
-  const cancel = doc.querySelector("#cancel");
-
   pubsub.subscribe("createEditListener", editListener);
   pubsub.subscribe("createDeleteListener", trashListener);
+  pubsub.subscribe("createFormListener", formListener);
+  pubsub.subscribe("createAddListener", addListener);
+  pubsub.subscribe("createCancelListener", cancelListener);
 
-  [add, cancel].forEach((btn) => btn.addEventListener("click", toggleForm));
+  function addListener(add) {
+    add.addEventListener("click", () => pubsub.publish("addForm"));
+  }
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    gatherInput(form);
-    toggleForm();
-    form.reset();
-  });
+  function cancelListener(cancel) {
+    cancel.addEventListener("click", () => pubsub.publish("cancelForm"));
+  }
+
+  function formListener(form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      pubsub.publish("submitForm", {
+        submitType: e.target.childNodes[15].childNodes[1].value,
+      });
+    });
+  }
 
   function trashListener({ task, trash }) {
     trash.addEventListener("click", (e) => {
@@ -29,26 +35,6 @@ const inputHandler = (doc) => {
     edit.addEventListener("click", (e) => {
       pubsub.publish("editForm", task);
     });
-  }
-
-  function editTask(task) {
-    form["title"].value = task.title;
-    form["datetime-local"].value = task.dueDate;
-    form["priority"].value = task.priority;
-    toggleForm();
-  }
-
-  function gatherInput(form) {
-    const formData = new FormData(form);
-    pubsub.publish("addTask", {
-      title: formData.get("title"),
-      datetime: formData.get("datetime-local"),
-      priority: formData.get("priority"),
-    });
-  }
-
-  function toggleForm() {
-    formContainer.classList.toggle("visible");
   }
 };
 
