@@ -12,19 +12,18 @@ const formHandler = (doc) => {
   pubsub.publish("createAddListener", add);
   pubsub.publish("createCancelListener", cancel);
 
+  pubsub.subscribe("addForm", addForm);
   pubsub.subscribe("editForm", editForm);
   pubsub.subscribe("submitForm", submitForm);
-  pubsub.subscribe("addForm", () => showForm("add"));
-  pubsub.subscribe("cancelForm", hideForm);
+  pubsub.subscribe("cancelForm", toggleForm);
 
   function submitForm({ submitType }) {
-    console.log(submitType);
-    gatherInput(form);
-    hideForm();
+    gatherInput(form, submitType);
+    toggleForm();
     form.reset();
   }
 
-  function gatherInput(form) {
+  function gatherInput(form, submitType) {
     const formData = new FormData(form);
     pubsub.publish("addTask", {
       title: formData.get("title"),
@@ -33,29 +32,31 @@ const formHandler = (doc) => {
     });
   }
 
+  function addForm(task) {
+    // set form header and button values
+    formHeader.textContent = "Add Task";
+    submit.value = "Add";
+
+    // toggle form visibility
+    toggleForm();
+  }
+
   function editForm(task) {
+    // set form header and button values
+    formHeader.textContent = "Edit Task";
+    submit.value = "Edit";
+
+    // set form values to current task values
     form["title"].value = task.title;
     form["datetime-local"].value = task.dueDate;
     form["priority"].value = task.priority;
-    showForm("edit");
+
+    // toggle form visibility
+    toggleForm();
   }
 
-  function hideForm() {
-    formContainer.classList.remove("visible");
-  }
-
-  function showForm(formType) {
-    // update form header and submit button to match the form content
-    if (formType === "add") {
-      formHeader.textContent = "Add Task";
-      submit.value = "Add";
-    } else if (formType === "edit") {
-      formHeader.textContent = "Edit Task";
-      submit.value = "Edit";
-    }
-
-    // show the form of provided formType
-    formContainer.classList.add("visible");
+  function toggleForm() {
+    formContainer.classList.toggle("visible");
   }
 };
 
