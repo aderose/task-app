@@ -2,9 +2,10 @@ import pubsub from "./pubsub";
 
 const formHandler = (doc) => {
   const formContainer = doc.querySelector(".form-container");
-  const formHeader = doc.querySelector("form h2");
-  const form = doc.querySelector("form");
+  const form = formContainer.childNodes[1];
+  const formHeader = form.childNodes[1];
   const add = doc.querySelector(".add");
+  const submit = form.childNodes[15].childNodes[1];
   const cancel = doc.querySelector("#cancel");
 
   pubsub.publish("createFormListener", form);
@@ -13,13 +14,13 @@ const formHandler = (doc) => {
 
   pubsub.subscribe("editForm", editForm);
   pubsub.subscribe("submitForm", submitForm);
-  pubsub.subscribe("toggleForm", toggleForm);
-  pubsub.subscribe("addForm", () => toggleForm("add"));
-  pubsub.subscribe("cancelForm", () => toggleForm("hide"));
+  pubsub.subscribe("addForm", () => showForm("add"));
+  pubsub.subscribe("cancelForm", hideForm);
 
-  function submitForm() {
+  function submitForm({ submitType }) {
+    console.log(submitType);
     gatherInput(form);
-    toggleForm("hide");
+    hideForm();
     form.reset();
   }
 
@@ -36,12 +37,25 @@ const formHandler = (doc) => {
     form["title"].value = task.title;
     form["datetime-local"].value = task.dueDate;
     form["priority"].value = task.priority;
-    toggleForm("edit");
+    showForm("edit");
   }
 
-  function toggleForm(formType) {
-    console.log(formType);
-    formContainer.classList.toggle("visible");
+  function hideForm() {
+    formContainer.classList.remove("visible");
+  }
+
+  function showForm(formType) {
+    // update form header and submit button to match the form content
+    if (formType === "add") {
+      formHeader.textContent = "Add Task";
+      submit.value = "Add";
+    } else if (formType === "edit") {
+      formHeader.textContent = "Edit Task";
+      submit.value = "Edit";
+    }
+
+    // show the form of provided formType
+    formContainer.classList.add("visible");
   }
 };
 
