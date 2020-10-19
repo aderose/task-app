@@ -24,6 +24,14 @@ body {
   font-size: 16px;
 }
 
+h2 {
+  color: var(--main-color);
+}
+
+.hidden {
+  display: none;
+}
+
 /* header styling */
 
 header {
@@ -43,17 +51,33 @@ header h1 {
 
 /* Task list container styling */
 
-h2 {
-  color: var(--main-color);
+.list-header button {
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  font-weight: 700;
+  padding: 0.25em;
+  cursor: pointer;
+}
+
+.list-header button:focus {
+  outline: none;
+}
+
+.list-header button:hover h2 {
+  filter: brightness(115%);
 }
 
 .list-container {
   width: 90%;
   margin: 0 auto;
+  margin-top: 1em;
   max-width: 400px;
 }
 
 .list-header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -185,7 +209,7 @@ form * {
   width: 100%;
 }
 
-input,
+form input,
 select {
   margin-bottom: 2em;
   font-family: inherit;
@@ -195,13 +219,13 @@ select {
   border-radius: 5px;
 }
 
-input:hover,
+form input:hover,
 select:hover {
   filter: brightness(95%);
 }
 
 select:focus,
-input:focus,
+form input:focus,
 .form-action:focus {
   outline: none;
 }
