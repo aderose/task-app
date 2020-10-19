@@ -20,6 +20,8 @@ class Task {
 
   set title(title) {
     this._title = title;
+    // update title element with new title on update
+    if (this.element) taskElement.updateTitle(this.element, title);
   }
 
   get title() {
@@ -28,6 +30,8 @@ class Task {
 
   set dueDate(dueDate) {
     this._dueDate = dueDate;
+    // update dueDate element with new dueDate on update
+    if (this.element) taskElement.updateDueDate(this.element, dueDate);
   }
 
   get dueDate() {
@@ -36,6 +40,8 @@ class Task {
 
   set priority(priority) {
     this._priority = priority;
+    // update priority styling with new priority on update
+    if (this.element) taskElement.updatePriority(this.element, priority);
   }
 
   get priority() {

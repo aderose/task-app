@@ -24,12 +24,8 @@ const taskManager = (container) => {
 
   function editTask(taskInfo) {
     taskToEdit.title = taskInfo.title;
-    taskToEdit.datetime = taskInfo.datetime;
+    taskToEdit.dueDate = taskInfo.datetime;
     taskToEdit.priority = taskInfo.priority;
-    console.log(taskInfo);
-    console.log(taskToEdit);
-    console.log(_tasks);
-    renderTasks();
   }
 
   function removeTask(task) {
