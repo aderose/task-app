@@ -58,14 +58,17 @@ const taskElement = ((doc) => {
     return element;
   };
 
+  // update the provided element's
   const updateTitle = (element, title) => {
     element.childNodes[1].textContent = title;
   };
 
+  // update the provided element's due date
   const updateDueDate = (element, dueDate) => {
     element.childNodes[0].childNodes[0].textContent = dueDate;
   };
 
+  // update the provided element's priority
   const updatePriority = (element, priority) => {
     element.setAttribute("class", `task ${priority.toLowerCase()}-priority`);
   };
