@@ -19,13 +19,13 @@ const formHandler = (doc) => {
   pubsub.subscribe("submitForm", submitForm);
   pubsub.subscribe("cancelForm", toggleForm);
 
-  function submitForm({ submitType }) {
-    gatherInput(form, submitType);
+  function submitForm() {
+    gatherInput(form);
     toggleForm();
     form.reset();
   }
 
-  function gatherInput(form, submitType) {
+  function gatherInput(form) {
     // gather task information from the form
     const formData = new FormData(form);
     const taskInfo = {
@@ -35,8 +35,8 @@ const formHandler = (doc) => {
     };
 
     // publish respective event based on submit type
-    if (submitType === "Add") pubsub.publish("addTask", taskInfo);
-    if (submitType === "Edit")
+    if (submit.value === "Add") pubsub.publish("addTask", taskInfo);
+    if (submit.value === "Edit")
       pubsub.publish("editTask", { id: form.id, taskInfo });
   }
 

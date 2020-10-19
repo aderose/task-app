@@ -23,25 +23,18 @@ const inputHandler = () => {
   function formListener(form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      pubsub.publish("submitForm", {
-        // get value of the submit button to determine submission type
-        submitType: e.target.childNodes[15].childNodes[1].value,
-      });
+      pubsub.publish("submitForm");
     });
   }
 
   // publish "removeTask" event when a task's remove button is clicked
   function trashListener({ task, trash }) {
-    trash.addEventListener("click", (e) => {
-      pubsub.publish("removeTask", task);
-    });
+    trash.addEventListener("click", () => pubsub.publish("removeTask", task));
   }
 
   // publish "editForm" event when a task's edit button is clicked
   function editListener({ task, edit }) {
-    edit.addEventListener("click", (e) => {
-      pubsub.publish("editForm", task);
-    });
+    edit.addEventListener("click", () => pubsub.publish("editForm", task));
   }
 };
 
