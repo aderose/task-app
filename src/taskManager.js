@@ -4,9 +4,11 @@ import Task from "./Task";
 const taskManager = (container) => {
   const _tasks = [];
   let taskId = 0;
+  let taskToEdit = {};
 
   pubsub.subscribe("addTask", addTask);
   pubsub.subscribe("editTask", editTask);
+  pubsub.subscribe("upcomingEditTask", prepareEditTask);
   pubsub.subscribe("removeTask", removeTask);
 
   function addTask(task) {
@@ -16,8 +18,18 @@ const taskManager = (container) => {
     renderTasks();
   }
 
+  function prepareEditTask(task) {
+    taskToEdit = task;
+  }
+
   function editTask(taskInfo) {
+    taskToEdit.title = taskInfo.title;
+    taskToEdit.datetime = taskInfo.datetime;
+    taskToEdit.priority = taskInfo.priority;
     console.log(taskInfo);
+    console.log(taskToEdit);
+    console.log(_tasks);
+    renderTasks();
   }
 
   function removeTask(task) {

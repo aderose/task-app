@@ -53,6 +53,9 @@ const formHandler = (doc) => {
     formHeader.textContent = "Edit Task";
     submit.value = "Edit";
 
+    // publish taskEdit event to warn taskManager of upcoming input
+    pubsub.publish("upcomingEditTask", task);
+
     // set form values to current task values
     form["title"].value = task.title;
     form["datetime-local"].value = task.dueDate;
