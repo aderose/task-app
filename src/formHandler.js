@@ -8,10 +8,12 @@ const formHandler = (doc) => {
   const submit = form.childNodes[15].childNodes[1];
   const cancel = doc.querySelector("#cancel");
 
+  // add listeners to the form, add and cancel buttons through inputHandler
   pubsub.publish("createFormListener", form);
   pubsub.publish("createAddListener", add);
   pubsub.publish("createCancelListener", cancel);
 
+  // subscribe to all form events
   pubsub.subscribe("addForm", addForm);
   pubsub.subscribe("editForm", editForm);
   pubsub.subscribe("submitForm", submitForm);
@@ -24,6 +26,7 @@ const formHandler = (doc) => {
   }
 
   function gatherInput(form, submitType) {
+    // gather task information from the form
     const formData = new FormData(form);
     const taskInfo = {
       title: formData.get("title"),
@@ -31,11 +34,12 @@ const formHandler = (doc) => {
       priority: formData.get("priority"),
     };
 
+    // publish respective event based on submit type
     if (submitType === "Add") pubsub.publish("addTask", taskInfo);
     if (submitType === "Edit") pubsub.publish("editTask", taskInfo);
   }
 
-  function addForm(task) {
+  function addForm() {
     // set form header and button values
     formHeader.textContent = "Add Task";
     submit.value = "Add";

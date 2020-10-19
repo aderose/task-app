@@ -20,6 +20,7 @@ const inputHandler = (doc) => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       pubsub.publish("submitForm", {
+        // get value of the submit button to determine submission type
         submitType: e.target.childNodes[15].childNodes[1].value,
       });
     });

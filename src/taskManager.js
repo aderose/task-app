@@ -6,6 +6,7 @@ const taskManager = (container) => {
   let taskId = 0;
 
   pubsub.subscribe("addTask", addTask);
+  pubsub.subscribe("editTask", editTask);
   pubsub.subscribe("removeTask", removeTask);
 
   function addTask(task) {
@@ -13,6 +14,10 @@ const taskManager = (container) => {
       new Task(taskId++, task.title, task.datetime, task.priority, false)
     );
     renderTasks();
+  }
+
+  function editTask(taskInfo) {
+    console.log(taskInfo);
   }
 
   function removeTask(task) {
