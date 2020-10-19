@@ -16,36 +16,34 @@
     </header>
     <main class="list-container">
       <div class="list-header">
-        <h2>Task List 1</h2>
+        <h2>Example List</h2>
         <i class="add fas fa-plus-circle"></i>
       </div>
       <ul></ul>
-      <div class="form-container">
-        <form>
-          <h2>Add Task</h2>
-          <label for="title">Task</label>
-          <input type="text" name="title" id="title" autocomplete="off" />
-          <label for="date">Due Date</label>
-          <input
-            type="datetime-local"
-            name="datetime-local"
-            id="datetime-local"
-          />
-          <label for="priority">Priority</label>
-          <select name="priority" id="priority">
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-          <div class="submission">
-            <input class="form-action" type="submit" value="Add" id="add" />
-            <button class="form-action" type="button" id="cancel">
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
     </main>
+    <div class="form-container">
+      <form>
+        <h2>Add Task</h2>
+        <label for="title">Task</label>
+        <input type="text" name="title" id="title" autocomplete="off" />
+        <label for="date">Due Date</label>
+        <input
+          type="datetime-local"
+          name="datetime-local"
+          id="datetime-local"
+        />
+        <label for="priority">Priority</label>
+        <select name="priority" id="priority">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <div class="submission">
+          <input class="form-action" type="submit" value="Add" id="add" />
+          <button class="form-action" type="button" id="cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
     <script src="main.js"></script>
   </body>
 </html>
