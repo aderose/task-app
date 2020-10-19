@@ -36,25 +36,30 @@ const formHandler = (doc) => {
 
     // publish respective event based on submit type
     if (submitType === "Add") pubsub.publish("addTask", taskInfo);
-    if (submitType === "Edit") pubsub.publish("editTask", taskInfo);
+    if (submitType === "Edit")
+      pubsub.publish("editTask", { id: form.id, taskInfo });
   }
 
   function addForm() {
-    // set form header and button values
+    // set approprate form values
     formHeader.textContent = "Add Task";
     submit.value = "Add";
+
+    // get rid of any old task edit ids
+    form.setAttribute("id", "");
 
     // toggle form visibility
     toggleForm();
   }
 
   function editForm(task) {
-    // set form header and button values
+    // set approprate form values
     formHeader.textContent = "Edit Task";
     submit.value = "Edit";
 
-    // publish taskEdit event to warn taskManager of upcoming input
-    pubsub.publish("upcomingEditTask", task);
+    // set form's id equal to the task ID so that we know which task to
+    // edit when the form has been submitted
+    form.setAttribute("id", task.id);
 
     // set form values to current task values
     form["title"].value = task.title;
