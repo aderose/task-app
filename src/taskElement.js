@@ -35,12 +35,13 @@ const taskElement = ((doc) => {
     return controls;
   };
 
+  // create a div containing the task due date
   const _createDate = (date) => {
     const dueDate = date
       ? format(new Date(date), "HH:mm, EEE. do MMMM yyyy")
       : "";
-    const timer = _createTag("div", { class: "deadline" }, dueDate);
-    return timer;
+    const dateTag = _createTag("div", { class: "deadline" }, dueDate);
+    return dateTag;
   };
 
   const _createHeader = (task) => {
