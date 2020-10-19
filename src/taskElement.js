@@ -34,11 +34,17 @@ const taskElement = ((doc) => {
     return controls;
   };
 
+  const _createDate = (date) => {
+    const dueDate = date ? new Date(date) : "";
+    const timer = _createTag("div", { class: "deadline" }, dueDate);
+    return timer;
+  };
+
   const _createHeader = (task) => {
     const header = _createTag("div", { class: "task-header" });
 
     // append deadline and controls to header
-    header.appendChild(_createTag("div", { class: "deadline" }, task.dueDate));
+    header.appendChild(_createDate(task.dueDate));
     header.appendChild(_createControls(task));
 
     return header;
@@ -65,7 +71,9 @@ const taskElement = ((doc) => {
 
   // update the provided element's due date
   const updateDueDate = (element, dueDate) => {
-    element.childNodes[0].childNodes[0].textContent = dueDate;
+    element.childNodes[0].childNodes[0].textContent = _createDate(
+      dueDate
+    ).textContent;
   };
 
   // update the provided element's priority

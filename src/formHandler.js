@@ -22,7 +22,6 @@ const formHandler = (doc) => {
   function submitForm() {
     gatherInput(form);
     toggleForm();
-    form.reset();
   }
 
   function gatherInput(form) {
@@ -41,6 +40,8 @@ const formHandler = (doc) => {
   }
 
   function addForm() {
+    // reset previous form input
+    form.reset();
     // set approprate form values
     formHeader.textContent = "Add Task";
     submit.value = "Add";
@@ -53,6 +54,8 @@ const formHandler = (doc) => {
   }
 
   function editForm(task) {
+    // reset previous form input
+    form.reset();
     // set approprate form values
     formHeader.textContent = "Edit Task";
     submit.value = "Edit";
