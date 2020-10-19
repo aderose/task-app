@@ -25,11 +25,14 @@ const formHandler = (doc) => {
 
   function gatherInput(form, submitType) {
     const formData = new FormData(form);
-    pubsub.publish("addTask", {
+    const taskInfo = {
       title: formData.get("title"),
       datetime: formData.get("datetime-local"),
       priority: formData.get("priority"),
-    });
+    };
+
+    if (submitType === "Add") pubsub.publish("addTask", taskInfo);
+    if (submitType === "Edit") pubsub.publish("editTask", taskInfo);
   }
 
   function addForm(task) {
