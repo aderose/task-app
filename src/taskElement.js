@@ -1,4 +1,5 @@
 import pubsub from "./pubsub";
+import { format } from "date-fns";
 
 const taskElement = ((doc) => {
   // create html tag of provided type, given attributes and containing provided
@@ -35,7 +36,9 @@ const taskElement = ((doc) => {
   };
 
   const _createDate = (date) => {
-    const dueDate = date ? new Date(date) : "";
+    const dueDate = date
+      ? format(new Date(date), "HH:mm, EEE. do MMMM yyyy")
+      : "";
     const timer = _createTag("div", { class: "deadline" }, dueDate);
     return timer;
   };
