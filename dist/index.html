@@ -26,17 +26,13 @@
         <h2>Add Task</h2>
         <label for="title">Task</label>
         <input type="text" name="title" id="title" autocomplete="off" />
-        <label for="date">Due Date</label>
-        <input
-          type="datetime-local"
-          name="datetime-local"
-          id="datetime-local"
-        />
+        <label for="datetime">Due Date</label>
+        <input type="datetime-local" name="datetime" id="datetime" />
         <label for="priority">Priority</label>
         <select name="priority" id="priority">
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
           <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
         </select>
         <div class="submission">
           <input class="form-action" type="submit" value="Add" id="add" />

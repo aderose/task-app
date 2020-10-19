@@ -29,7 +29,7 @@ const formHandler = (doc) => {
     const formData = new FormData(form);
     const taskInfo = {
       title: formData.get("title"),
-      datetime: formData.get("datetime-local"),
+      datetime: formData.get("datetime"),
       priority: formData.get("priority"),
     };
 
@@ -66,7 +66,7 @@ const formHandler = (doc) => {
 
     // set form values to current task values
     form["title"].value = task.title;
-    form["datetime-local"].value = task.dueDate;
+    form["datetime"].value = task.dueDate;
     form["priority"].value = task.priority;
 
     // toggle form visibility
