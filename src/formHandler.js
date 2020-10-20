@@ -36,7 +36,7 @@ const formHandler = (doc) => {
     // publish respective event based on submit type
     if (submit.value === "Add") pubsub.publish("addTask", taskInfo);
     if (submit.value === "Edit")
-      pubsub.publish("editTask", { id: form.id, taskInfo });
+      pubsub.publish("editTask", { id: Number(form.id), taskInfo });
   }
 
   function addForm() {

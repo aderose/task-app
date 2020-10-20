@@ -28,8 +28,8 @@ class TaskList {
   }
 
   // update the task associated with the given taskId with the new taskInfo
-  editTask({ taskId, taskInfo }) {
-    const task = this.getTaskById(taskId);
+  editTask({ id, taskInfo }) {
+    const task = this.getTaskById(id);
     task.title = taskInfo.title;
     task.dueDate = taskInfo.datetime;
     task.priority = taskInfo.priority;
@@ -48,7 +48,7 @@ class TaskList {
 
   // get a task from the task list given an id
   getTaskById(id) {
-    return this.tasks.reduce((x) => x.id === id);
+    return this.tasks.find((x) => x.id === id);
   }
 
   // render the task list by appending it to the provided container
