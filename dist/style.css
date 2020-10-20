@@ -61,6 +61,10 @@ header h1 {
   cursor: pointer;
 }
 
+.list-header button h2 {
+  word-break: break-all;
+}
+
 .list-header button:focus {
   outline: none;
 }
