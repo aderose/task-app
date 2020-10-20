@@ -1,11 +1,11 @@
 import formHandler from "./formHandler";
 import inputHandler from "./inputHandler";
-import taskManager from "./taskManager";
+import listHandler from "./listHandler";
 
 window.addEventListener("load", handleDocument);
 
 function handleDocument() {
   inputHandler();
+  listHandler(document);
   formHandler(document);
-  taskManager(document.querySelector("ul"));
 }
