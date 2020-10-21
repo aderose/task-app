@@ -9,6 +9,7 @@ const inputHandler = () => {
   pubsub.subscribe("createAddListener", addListener);
   pubsub.subscribe("createCancelListener", cancelListener);
   pubsub.subscribe("createCompleteListener", completeListener);
+  pubsub.subscribe("createTitleListener", listTitleListener);
 
   // publish an "addForm" event when the add task button is clicked
   function addListener(add) {
@@ -51,6 +52,13 @@ const inputHandler = () => {
   function completeListener({ container, task }) {
     container.addEventListener("click", () => {
       pubsub.publish("completeTask", task);
+    });
+  }
+
+  // listen for click on the list title
+  function listTitleListener(taskList) {
+    taskList.titleTag.addEventListener("click", () => {
+      pubsub.publish("changeList", taskList);
     });
   }
 };

@@ -11,7 +11,10 @@ class TaskList {
     this.list = doc.createElement("ul");
 
     // add header & list to container
-    this.container.appendChild(this.createHeader());
+
+    const { header, titleTag } = this.createHeader();
+    this.titleTag = titleTag;
+    this.container.appendChild(header);
     this.container.appendChild(this.list);
   }
 
@@ -66,10 +69,10 @@ class TaskList {
 
   // create the task list title
   createTitle() {
-    const title = this.doc.createElement("button");
-    title.setAttribute("class", "title");
-    title.textContent = this.name;
-    return title;
+    const titleTag = this.doc.createElement("button");
+    titleTag.setAttribute("class", "title");
+    titleTag.textContent = this.name;
+    return titleTag;
   }
 
   // create list header containing a clickable title and add button
@@ -77,29 +80,32 @@ class TaskList {
     const header = this.doc.createElement("div");
     header.setAttribute("class", "list-header");
 
-    const title = this.createTitle();
+    const titleTag = this.createTitle();
     const add = this.doc.createElement("i");
     add.setAttribute("class", "add fas fa-plus-circle");
 
-    header.appendChild(title);
+    header.appendChild(titleTag);
     header.appendChild(add);
 
-    return header;
+    return { header, titleTag };
   }
 
   // subscribe to all the task list events
-  subscribeToTaskEvents() {
+  subscribeToEvents() {
     pubsub.subscribe("addTask", this.addTask.bind(this));
     pubsub.subscribe("editTask", this.editTask.bind(this));
     pubsub.subscribe("removeTask", this.removeTask.bind(this));
     pubsub.subscribe("completeTask", this.updateTaskStatus);
+    pubsub.publish("createTitleListener", this);
   }
 
   // unsubscribe from all the task list events
-  unsubscribeFromTaskEvents() {
+  unsubscribeFromEvents() {
     pubsub.unsubscribe("addTask", this.addTask.bind(this));
     pubsub.unsubscribe("editTask", this.editTask.bind(this));
     pubsub.unsubscribe("removeTask", this.removeTask.bind(this));
+    pubsub.subscribe("completeTask", this.updateTaskStatus);
+    pubsub.publish("createTitleListener", this);
   }
 
   set name(name) {
@@ -132,6 +138,14 @@ class TaskList {
 
   get container() {
     return this._container;
+  }
+
+  get titleTag() {
+    return this._titleTag;
+  }
+
+  set titleTag(titleTag) {
+    this._titleTag = titleTag;
   }
 }
 
