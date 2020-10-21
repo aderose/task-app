@@ -1,4 +1,5 @@
 import Task from "./Task";
+import pubsub from "./pubsub";
 
 class TaskList {
   constructor(doc, container, name) {
@@ -74,6 +75,27 @@ class TaskList {
     header.appendChild(add);
 
     return header;
+  }
+
+  // update the task & task element's status
+  updateTaskStatus({ textTag, task }) {
+    textTag.classList.toggle("completed");
+    task.isComplete = !task.isComplete;
+  }
+
+  // subscribe to all the task list events
+  subscribeToTaskEvents() {
+    pubsub.subscribe("addTask", this.addTask.bind(this));
+    pubsub.subscribe("editTask", this.editTask.bind(this));
+    pubsub.subscribe("removeTask", this.removeTask.bind(this));
+    pubsub.subscribe("completeTask", this.updateTaskStatus.bind(this));
+  }
+
+  // unsubscribe from all the task list events
+  unsubscribeFromTaskEvents() {
+    pubsub.unsubscribe("addTask", this.addTask.bind(this));
+    pubsub.unsubscribe("editTask", this.editTask.bind(this));
+    pubsub.unsubscribe("removeTask", this.removeTask.bind(this));
   }
 
   set name(name) {

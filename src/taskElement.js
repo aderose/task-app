@@ -61,9 +61,13 @@ const taskElement = ((doc) => {
       class: `task ${task.priority}-priority`,
     });
 
+    const textTag = _createTag("div", { class: "task-text" }, task.title);
+
+    pubsub.publish("createCompleteListener", { element, textTag, task });
+
     // populate element with a header and title
     element.appendChild(_createHeader(task));
-    element.appendChild(_createTag("div", { class: "task-text" }, task.title));
+    element.appendChild(textTag);
 
     return element;
   };

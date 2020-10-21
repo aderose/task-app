@@ -8,6 +8,7 @@ const inputHandler = () => {
   pubsub.subscribe("createFormListener", formListener);
   pubsub.subscribe("createAddListener", addListener);
   pubsub.subscribe("createCancelListener", cancelListener);
+  pubsub.subscribe("createCompleteListener", completeListener);
 
   // publish an "addForm" event when the add task button is clicked
   function addListener(add) {
@@ -29,12 +30,28 @@ const inputHandler = () => {
 
   // publish "removeTask" event when a task's remove button is clicked
   function trashListener({ task, trash }) {
-    trash.addEventListener("click", () => pubsub.publish("removeTask", task));
+    trash.addEventListener("click", (e) => {
+      pubsub.publish("removeTask", task);
+
+      // prevent underlying div listener from being activated
+      e.stopPropagation();
+    });
   }
 
   // publish "editForm" event when a task's edit button is clicked
   function editListener({ task, edit }) {
-    edit.addEventListener("click", () => pubsub.publish("editForm", task));
+    edit.addEventListener("click", (e) => {
+      pubsub.publish("editForm", task);
+      // prevent underlying div listener from being activated
+      e.stopPropagation();
+    });
+  }
+
+  // publish "taskComplete" event when a task container is clicked
+  function completeListener({ element, textTag, task }) {
+    element.addEventListener("click", () => {
+      pubsub.publish("completeTask", { textTag, task });
+    });
   }
 };
 

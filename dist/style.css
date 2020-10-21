@@ -32,6 +32,11 @@ h2 {
   display: none;
 }
 
+.completed {
+  color: rgb(150, 150, 150);
+  text-decoration: line-through;
+}
+
 /* header styling */
 
 header {
