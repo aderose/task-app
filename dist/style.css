@@ -259,6 +259,76 @@ ul {
   margin-bottom: 1em;
 }
 
+/* Task list selection menu */
+
+.list-selection-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.list-selection {
+  background-color: var(--clean-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1em;
+  border-radius: 5px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.select-close {
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 2em;
+  color: var(--clean-color);
+  background-color: var(--main-color);
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  top: -13px;
+  right: -13px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(45deg);
+}
+
+.select-close:hover {
+  filter: brightness(115%);
+}
+
+.list-selection h2 {
+  margin-bottom: 0.5em;
+}
+
+.list-selection ul {
+  width: 100%;
+}
+
+.list-entry {
+  width: 100%;
+  padding: 0.5em 0;
+  cursor: pointer;
+}
+
+.list-entry:hover {
+  background-color: var(--secondary-color);
+}
+
 .visible {
   transition: opacity 0.3s;
   opacity: 1;
