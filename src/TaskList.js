@@ -42,6 +42,11 @@ class TaskList {
     this.render();
   }
 
+  // update the task & task element's status
+  updateTaskStatus(task) {
+    task.updateStatus();
+  }
+
   // get a tasks list index
   getTaskIndex(task) {
     return this.tasks.findIndex((x) => x.id === task.id);
@@ -55,7 +60,7 @@ class TaskList {
   // render the task list by appending it to the provided container
   render() {
     this.list.innerHTML = "";
-    this.tasks.forEach((task) => this.list.appendChild(task.element));
+    this.tasks.forEach((task) => this.list.appendChild(task.element.container));
   }
 
   // create list header containing a clickable title and add button
@@ -77,18 +82,12 @@ class TaskList {
     return header;
   }
 
-  // update the task & task element's status
-  updateTaskStatus({ textTag, task }) {
-    textTag.classList.toggle("completed");
-    task.isComplete = !task.isComplete;
-  }
-
   // subscribe to all the task list events
   subscribeToTaskEvents() {
     pubsub.subscribe("addTask", this.addTask.bind(this));
     pubsub.subscribe("editTask", this.editTask.bind(this));
     pubsub.subscribe("removeTask", this.removeTask.bind(this));
-    pubsub.subscribe("completeTask", this.updateTaskStatus.bind(this));
+    pubsub.subscribe("completeTask", this.updateTaskStatus);
   }
 
   // unsubscribe from all the task list events
