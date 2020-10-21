@@ -56,28 +56,6 @@ header h1 {
 
 /* Task list container styling */
 
-.list-header button {
-  background-color: transparent;
-  border: none;
-  text-align: left;
-  font-family: inherit;
-  font-weight: 700;
-  padding: 0.25em;
-  cursor: pointer;
-}
-
-.list-header button h2 {
-  word-break: break-all;
-}
-
-.list-header button:focus {
-  outline: none;
-}
-
-.list-header button:hover h2 {
-  filter: brightness(115%);
-}
-
 .list-container {
   width: 90%;
   margin: 0 auto;
@@ -92,16 +70,33 @@ header h1 {
   align-items: center;
 }
 
+.title {
+  color: var(--main-color);
+  font-family: inherit;
+  padding: 0.25em;
+  font-weight: 700;
+  font-size: 1.3em;
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  word-break: break-all;
+}
+
+.title:focus {
+  outline: none;
+}
+
+.title:hover,
+.list-header i:hover {
+  filter: brightness(115%);
+}
+
 .list-header i {
   font-size: 1.7em;
   color: var(--main-color);
-  filter: drop-shadow(2px 2px 0px var(--main-shadow));
   margin: 0.75em 0;
   cursor: pointer;
-}
-
-.list-header i:hover {
-  filter: brightness(115%) drop-shadow(2px 2px 0px var(--main-shadow));
 }
 
 ul {
@@ -110,7 +105,9 @@ ul {
   list-style-type: none;
 }
 
-li {
+/* task container */
+
+.task {
   padding: 0 0.75em;
   margin: 0.4em 0;
   background-color: var(--clean-color);
@@ -119,11 +116,6 @@ li {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-
-/* task container */
-
-.task {
   cursor: pointer;
 }
 
