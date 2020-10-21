@@ -2,10 +2,10 @@ import pubsub from "./pubsub";
 
 const formHandler = (doc) => {
   const formContainer = doc.querySelector(".form-container");
-  const form = formContainer.childNodes[1];
-  const formHeader = form.childNodes[1];
+  const form = doc.querySelector(".add-task-form");
+  const formHeader = doc.querySelector(".form-header");
   const add = doc.querySelector(".add");
-  const submit = form.childNodes[15].childNodes[1];
+  const submit = doc.querySelector("#add");
   const cancel = doc.querySelector("#cancel");
 
   // add listeners to the form, add and cancel buttons through inputHandler

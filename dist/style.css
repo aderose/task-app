@@ -194,7 +194,7 @@ ul {
   pointer-events: none;
 }
 
-form {
+.add-task-form {
   background-color: var(--clean-color);
   display: flex;
   flex-direction: column;
@@ -206,12 +206,12 @@ form {
   max-width: 400px;
 }
 
-form * {
+.add-task-form * {
   width: 100%;
 }
 
-form input,
-select {
+.add-task-form input,
+.add-task-form select {
   margin-bottom: 2em;
   font-family: inherit;
   padding: 0.5em;
@@ -220,18 +220,18 @@ select {
   border-radius: 5px;
 }
 
-form input:hover,
-select:hover {
+.add-task-form input:hover,
+.add-task-form select:hover {
   filter: brightness(95%);
 }
 
-select:focus,
-form input:focus,
+.add-task-form select:focus,
+.add-task-form input:focus,
 .form-action:focus {
   outline: none;
 }
 
-label {
+.add-task-form label {
   margin-bottom: 0.2em;
 }
 
@@ -255,7 +255,7 @@ label {
   filter: brightness(110%);
 }
 
-.form-container h2 {
+.form-header {
   margin-bottom: 1em;
 }
 
