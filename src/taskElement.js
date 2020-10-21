@@ -46,50 +46,62 @@ const taskElement = ((doc) => {
 
   const _createHeader = (task) => {
     const header = _createTag("div", { class: "task-header" });
+    const dateTag = _createDate(task.dueDate);
 
     // append deadline and controls to header
-    header.appendChild(_createDate(task.dueDate));
+    header.appendChild(dateTag);
     header.appendChild(_createControls(task));
 
-    return header;
+    return { header, dateTag };
   };
 
   const createElement = (task) => {
     // create the task list element with the correct id and priority
-    const element = _createTag("li", {
+    const container = _createTag("li", {
       id: task.id,
       class: `task ${task.priority}-priority`,
     });
 
     const textTag = _createTag("div", { class: "task-text" }, task.title);
 
-    pubsub.publish("createCompleteListener", { element, textTag, task });
+    // listen for clicks on the task container
+    pubsub.publish("createCompleteListener", { container, task });
+
+    const { header, dateTag } = _createHeader(task);
 
     // populate element with a header and title
-    element.appendChild(_createHeader(task));
-    element.appendChild(textTag);
+    container.appendChild(header);
+    container.appendChild(textTag);
 
-    return element;
+    return { container, textTag, dateTag };
   };
 
   // update the provided element's
   const updateTitle = (element, title) => {
-    element.childNodes[1].textContent = title;
+    element.textTag.textContent = title;
   };
 
   // update the provided element's due date
   const updateDueDate = (element, dueDate) => {
-    element.childNodes[0].childNodes[0].textContent = _createDate(
-      dueDate
-    ).textContent;
+    element.dateTag.textContent = _createDate(dueDate).textContent;
   };
 
   // update the provided element's priority
   const updatePriority = (element, priority) => {
-    element.setAttribute("class", `task ${priority.toLowerCase()}-priority`);
+    element.container.setAttribute("class", `task ${priority}-priority`);
   };
 
-  return { createElement, updateTitle, updateDueDate, updatePriority };
+  const updateStatus = (element) => {
+    element.textTag.classList.toggle("completed");
+  };
+
+  return {
+    createElement,
+    updateTitle,
+    updateDueDate,
+    updatePriority,
+    updateStatus,
+  };
 })(document);
 
 export default taskElement;
