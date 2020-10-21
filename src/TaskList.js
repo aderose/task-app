@@ -5,12 +5,13 @@ class TaskList {
   constructor(doc, container, name) {
     this.name = name;
     this.container = container;
+    this.doc = doc;
     this.tasks = [];
     this.increment = 0;
     this.list = doc.createElement("ul");
 
     // add header & list to container
-    this.container.appendChild(this.createHeader(doc, name));
+    this.container.appendChild(this.createHeader());
     this.container.appendChild(this.list);
   }
 
@@ -63,20 +64,24 @@ class TaskList {
     this.tasks.forEach((task) => this.list.appendChild(task.element.container));
   }
 
-  // create list header containing a clickable title and add button
-  createHeader(doc, name) {
-    const header = doc.createElement("div");
-    header.setAttribute("class", "list-header");
-    const titleBtn = doc.createElement("button");
-    const titleText = doc.createElement("h2");
-    titleText.setAttribute("id", "title");
-    titleText.textContent = name;
-    titleBtn.appendChild(titleText);
+  // create the task list title
+  createTitle() {
+    const title = this.doc.createElement("button");
+    title.setAttribute("class", "title");
+    title.textContent = this.name;
+    return title;
+  }
 
-    const add = doc.createElement("i");
+  // create list header containing a clickable title and add button
+  createHeader() {
+    const header = this.doc.createElement("div");
+    header.setAttribute("class", "list-header");
+
+    const title = this.createTitle();
+    const add = this.doc.createElement("i");
     add.setAttribute("class", "add fas fa-plus-circle");
 
-    header.appendChild(titleBtn);
+    header.appendChild(title);
     header.appendChild(add);
 
     return header;
@@ -102,7 +107,7 @@ class TaskList {
   }
 
   get name() {
-    return this.name;
+    return this._name;
   }
 
   set tasks(tasks) {
