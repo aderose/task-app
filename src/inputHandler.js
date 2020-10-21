@@ -48,9 +48,9 @@ const inputHandler = () => {
   }
 
   // publish "taskComplete" event when a task container is clicked
-  function completeListener({ element, textTag, task }) {
-    element.addEventListener("click", () => {
-      pubsub.publish("completeTask", { textTag, task });
+  function completeListener({ container, task }) {
+    container.addEventListener("click", () => {
+      pubsub.publish("completeTask", task);
     });
   }
 };
