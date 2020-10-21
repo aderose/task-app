@@ -10,6 +10,12 @@ class Task {
     this.element = taskElement.createElement(this);
   }
 
+  // update the task status
+  updateStatus() {
+    this.isComplete = !this.isComplete;
+    taskElement.updateStatus(this.element);
+  }
+
   set id(id) {
     this._id = id;
   }
