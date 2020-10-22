@@ -72,7 +72,7 @@ const inputHandler = () => {
 
   function menuListener(list) {
     list.menuItem.addEventListener("click", () => {
-      pubsub.publish("menuSelection", list);
+      pubsub.publish("menuItemSelected", list);
     });
   }
 };
