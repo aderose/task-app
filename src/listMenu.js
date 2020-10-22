@@ -11,6 +11,7 @@ const listMenu = (doc) => {
 
   // hide menu if the cross button is pressed
   pubsub.subscribe("hideSelection", hide);
+  pubsub.subscribe("titleClicked", show);
 
   // show the menu if it is currently hidden
   function show(items) {

@@ -13,6 +13,13 @@ const inputHandler = () => {
   pubsub.subscribe("closeListListener", closeListListener);
   pubsub.subscribe("createMenuListener", menuListener);
 
+  pubsub.subscribe("createEventListener", createEventListener);
+
+  // create an event listener for the provided properties
+  function createEventListener(properties) {
+    properties.element.addEventListener(properties.type, properties.fn);
+  }
+
   // publish an "addForm" event when the add task button is clicked
   function addListener(add) {
     add.addEventListener("click", () => pubsub.publish("addForm"));

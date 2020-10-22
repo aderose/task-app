@@ -12,7 +12,7 @@ const formHandler = (doc) => {
   pubsub.publish("createCancelListener", cancel);
 
   // subscribe to all form events
-  pubsub.subscribe("addForm", addForm);
+  pubsub.subscribe("addTaskClicked", showForm);
   pubsub.subscribe("editForm", editForm);
   pubsub.subscribe("submitForm", submitForm);
   pubsub.subscribe("cancelForm", toggleForm);
@@ -37,7 +37,7 @@ const formHandler = (doc) => {
       pubsub.publish("editTask", { id: Number(form.id), taskInfo });
   }
 
-  function addForm() {
+  function showForm() {
     // reset previous form input
     form.reset();
     // set approprate form values
