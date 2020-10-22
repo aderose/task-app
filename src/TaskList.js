@@ -57,7 +57,8 @@ class TaskList {
 
   // render the task list by appending it to the provided container
   removeTask(task) {
-    this.tasks.splice(this.getTaskIndex(task), 1);
+    console.log(task);
+    this.tasks = this.tasks.filter((t) => t !== task);
     this.renderTasks();
   }
 
