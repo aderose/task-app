@@ -4,16 +4,29 @@ const listMenu = (doc) => {
   const _container = doc.querySelector(".list-selection-container");
   const _menu = doc.querySelector(".list-selection-container ul");
   const _close = doc.querySelector(".select-close");
+  let isActive = false;
 
   // listen for click on close button
   pubsub.publish("closeListListener", _close);
 
   // hide menu if the cross button is pressed
-  pubsub.subscribe("hideSelection", _hideMenu);
+  pubsub.subscribe("hideSelection", hide);
+
+  // show the menu if it is currently hidden
+  function show(items) {
+    if (!isActive) {
+      render(items);
+      toggle();
+      isActive = !isActive;
+    }
+  }
 
   // hide the active menu
-  function _hideMenu() {
-    toggle();
+  function hide() {
+    if (isActive) {
+      toggle();
+      isActive = !isActive;
+    }
   }
 
   // toggle visibility of the selection menu
@@ -27,7 +40,7 @@ const listMenu = (doc) => {
     lists.forEach((list) => _menu.appendChild(list.menuItem));
   }
 
-  return { render, toggle };
+  return { render, show, hide };
 };
 
 export default listMenu;

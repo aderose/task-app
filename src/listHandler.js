@@ -5,11 +5,11 @@ import listMenu from "./listMenu";
 function listHandler(doc) {
   const _lists = [];
   const _container = doc.querySelector(".list-container");
+  const _menu = listMenu(doc);
   let currentList = _createExampleList("Example List 1");
-  const menu = listMenu(doc);
 
   // render the current list
-  currentList.render();
+  _makeMenuSelection(currentList);
 
   // call menu selection function when a menu item is selected
   pubsub.subscribe("menuItemSelected", _makeMenuSelection);
@@ -17,16 +17,14 @@ function listHandler(doc) {
   pubsub.subscribe("changeList", _showMenu);
 
   function _showMenu() {
-    menu.render(_lists);
-    menu.toggle();
+    _menu.show(_lists);
   }
 
   function _makeMenuSelection(list) {
-    console.log(list);
-    // currentList.flush();
-    // currentList = list;
-    // currentList.render();
-    menu.toggle();
+    currentList.flush();
+    currentList = list;
+    currentList.render();
+    _menu.hide();
   }
 
   // create example task list with a few tasks

@@ -119,9 +119,15 @@ class TaskList {
     pubsub.subscribe("editTask", this.editTask.bind(this));
     pubsub.subscribe("removeTask", this.removeTask.bind(this));
     pubsub.subscribe("completeTask", this.updateTaskStatus);
-    pubsub.publish("createTitleListener", this);
-    pubsub.publish("createMenuListener", this);
+
+    // listen for click on the add task button
     pubsub.publish("createAddListener", this.add);
+
+    // listen for a click on this list's title
+    pubsub.publish("createTitleListener", this);
+
+    // listen for click on this list's menu item
+    pubsub.publish("createMenuListener", this);
   }
 
   // unsubscribe from all the task list events
