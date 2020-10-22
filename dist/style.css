@@ -325,12 +325,16 @@ ul {
 
 .list-entry {
   width: 100%;
-  padding: 0.5em 0;
+  background-color: var(--secondary-color);
+  border-radius: 5px;
+  padding: 0.5em 0.25em;
+  margin-bottom: 0.25em;
   cursor: pointer;
+  word-break: break-all;
 }
 
 .list-entry:hover {
-  background-color: var(--secondary-color);
+  filter: brightness(95%);
 }
 
 .visible {
