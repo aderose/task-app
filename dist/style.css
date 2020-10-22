@@ -189,7 +189,6 @@ ul {
   left: 0;
   right: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.6);
   opacity: 0;
@@ -204,8 +203,10 @@ ul {
   align-items: flex-start;
   padding: 1em;
   border-radius: 5px;
+  height: fit-content;
   width: 90%;
   max-width: 400px;
+  margin-top: 12em;
 }
 
 .add-task-form * {
@@ -270,7 +271,6 @@ ul {
   left: 0;
   right: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.6);
   pointer-events: none;
@@ -287,6 +287,8 @@ ul {
   border-radius: 5px;
   width: 90%;
   max-width: 400px;
+  height: fit-content;
+  margin-top: 12em;
   position: relative;
 }
 
