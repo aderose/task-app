@@ -18,7 +18,6 @@ class TaskList {
     this.container.appendChild(this.list);
 
     // create menu item
-
     this.menuItem = doc.createElement("li");
     this.menuItem.setAttribute("class", "list-entry");
     this.menuItem.textContent = this.name;
@@ -96,8 +95,8 @@ class TaskList {
     return { header, titleTag };
   }
 
-  // subscribe to all the task list events
-  subscribeToEvents() {
+  // provide functionality to all buttons are functional
+  initialiseFunctionality() {
     pubsub.subscribe("addTask", this.addTask.bind(this));
     pubsub.subscribe("editTask", this.editTask.bind(this));
     pubsub.subscribe("removeTask", this.removeTask.bind(this));
@@ -110,8 +109,7 @@ class TaskList {
     pubsub.unsubscribe("addTask", this.addTask.bind(this));
     pubsub.unsubscribe("editTask", this.editTask.bind(this));
     pubsub.unsubscribe("removeTask", this.removeTask.bind(this));
-    pubsub.subscribe("completeTask", this.updateTaskStatus);
-    pubsub.publish("createTitleListener", this);
+    pubsub.unsubscribe("completeTask", this.updateTaskStatus);
   }
 
   set name(name) {
