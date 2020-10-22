@@ -13,7 +13,7 @@ const formHandler = (doc) => {
 
   // subscribe to all form events
   pubsub.subscribe("addTaskClicked", showForm);
-  pubsub.subscribe("editForm", editForm);
+  pubsub.subscribe("openEditForm", editForm);
   pubsub.subscribe("submitForm", submitForm);
   pubsub.subscribe("cancelForm", toggleForm);
 
