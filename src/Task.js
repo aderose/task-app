@@ -1,3 +1,4 @@
+import pubsub from "./pubsub";
 import taskElement from "./taskElement";
 
 class Task {
@@ -8,6 +9,58 @@ class Task {
     this.priority = priority || "Low";
     this.isComplete = isComplete || false;
     this.element = taskElement.createElement(this);
+  }
+
+  // set up event listeners on the task element
+  addEventListeners() {
+    // update the task status when the element is clicked
+    pubsub.publish("createEventListener", {
+      element: this.element.container,
+      type: "click",
+      fn: this.updateStatus.bind(this),
+    });
+
+    // edit this task
+    pubsub.publish("createEventListener", {
+      element: this.element.editTag,
+      type: "click",
+      fn: (e) => {
+        // open the edit task form
+        pubsub.publish("openEditForm", this);
+        e.stopPropagation();
+      },
+    });
+
+    // delete this task
+    pubsub.publish("createEventListener", {
+      element: this.element.trashTag,
+      type: "click",
+      fn: (e) => {
+        pubsub.publish("deleteTask", this);
+        e.stopPropagation();
+      },
+    });
+  }
+
+  // remove event listeners from the task element
+  removeEventListeners() {
+    // remove click listener on the container
+    pubsub.publish("deleteEventListener", {
+      element: this.element.container,
+      type: "click",
+    });
+
+    // // remove click listener on the edit icon
+    pubsub.publish("deleteEventListener", {
+      element: this.element.editTag,
+      type: "click",
+    });
+
+    // remove click listener on the trash icon
+    pubsub.publish("deleteEventListener", {
+      element: this.element.trashTag,
+      type: "click",
+    });
   }
 
   // update the task status
