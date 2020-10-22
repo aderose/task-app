@@ -9,7 +9,10 @@ function listHandler(doc) {
   // get the menu container from the document
   const _menu = doc.querySelector(".list-selection-container ul");
   const _closeSelection = doc.querySelector(".select-close");
-  _createExampleList();
+
+  // create an example for the user and render it
+  let currentList = _createExampleList();
+  currentList.render();
 
   pubsub.publish("closeListListener", _closeSelection);
   pubsub.subscribe("changeList", _toggleListSelection);
@@ -17,7 +20,10 @@ function listHandler(doc) {
   pubsub.subscribe("menuSelection", _makeMenuSelection);
 
   function _makeMenuSelection(list) {
-    console.log(list);
+    // currentList.flush();
+    // currentList = list;
+    // currentList.render();
+    _toggleListSelection();
   }
 
   // toggle the list selection menu
@@ -50,7 +56,7 @@ function listHandler(doc) {
       priority: "high",
     });
     _lists.push(exampleList);
-    exampleList.render();
+    return exampleList;
   }
 }
 
