@@ -13,19 +13,20 @@ class TaskList {
       { class: "list-entry" },
       this.name
     );
+    pubsub.subscribe("deleteTask", this.deleteTask.bind(this));
   }
 
   // add a new task to the task list and render the result
-  createTask(task) {
-    this.tasks.push(
-      new Task(
-        this.increment++,
-        task.title,
-        task.datetime,
-        task.priority,
-        false
-      )
+  createTask(info) {
+    const task = new Task(
+      this.increment++,
+      info.title,
+      info.datetime,
+      info.priority,
+      false
     );
+    this.tasks.push(task);
+    task.addEventListeners();
     this.renderTasks();
   }
 
@@ -39,6 +40,7 @@ class TaskList {
 
   // render the task list by appending it to the provided container
   deleteTask(task) {
+    task.removeEventListeners();
     this.tasks = this.tasks.filter((t) => t !== task);
     this.renderTasks();
   }
