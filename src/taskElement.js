@@ -1,38 +1,61 @@
-import pubsub from "./pubsub";
 import { format } from "date-fns";
+import tagFactory from "./tagFactory";
 
-const taskElement = ((doc) => {
-  // create html tag of provided type, given attributes and containing provided
-  // textContent
-  const _createTag = (type, attributes, textContent) => {
-    const element = doc.createElement(type);
-    if (attributes)
-      Object.keys(attributes).forEach((key) => {
-        element.setAttribute(key, attributes[key]);
-      });
-    if (textContent) element.textContent = textContent;
-    return element;
+const taskElement = (() => {
+  // create the task list element for the provided task
+  const createElement = (task) => {
+    const container = tagFactory.createTag("li", {
+      id: task.id,
+      class: `task ${task.priority}-priority`,
+    });
+
+    const textTag = tagFactory.createTag(
+      "p",
+      { class: "task-text" },
+      task.title
+    );
+
+    const { headerTag, dateTag } = _createHeader(task);
+
+    // populate element with a header and title
+    container.appendChild(headerTag);
+    container.appendChild(textTag);
+
+    return { container, textTag, dateTag };
   };
 
-  const _createControls = (task) => {
-    // create individual control elements
-    const controls = _createTag("div", { class: "controls" });
-    const edit = _createTag("button").appendChild(
-      _createTag("i", { class: "far fa-edit" })
-    );
-    const trash = _createTag("button").appendChild(
-      _createTag("i", { class: "far fa-trash-alt" })
-    );
+  // create controls for each task element
+  const _createControls = () => {
+    const controlsTag = tagFactory.createTag("div", { class: "controls" });
 
-    // call for click listeners to be added to the control buttons
-    pubsub.publish("createEditListener", { task, edit });
-    pubsub.publish("createDeleteListener", { task, trash });
+    // create a edit button containing an edit icon
+    const editTag = tagFactory
+      .createTag("button")
+      .appendChild(tagFactory.createTag("i", { class: "far fa-edit" }));
+
+    // create a trash button containing a trash icon
+    const trashTag = tagFactory
+      .createTag("button")
+      .appendChild(tagFactory.createTag("i", { class: "far fa-trash-alt" }));
 
     // append buttons to controls
-    controls.appendChild(edit);
-    controls.appendChild(trash);
+    controlsTag.appendChild(editTag);
+    controlsTag.appendChild(trashTag);
 
-    return controls;
+    return { controlsTag, editTag, trashTag };
+  };
+
+  // create the task element header which contains the due date and controls
+  const _createHeader = (task) => {
+    const headerTag = tagFactory.createTag("div", { class: "task-header" });
+    const dateTag = _createDate(task.dueDate);
+    const { controlsTag, editTag, trashTag } = _createControls(task);
+
+    // append deadline and controls to header
+    headerTag.appendChild(dateTag);
+    headerTag.appendChild(controlsTag);
+
+    return { headerTag, dateTag, editTag, trashTag };
   };
 
   // create a div containing the task due date
@@ -40,40 +63,8 @@ const taskElement = ((doc) => {
     const dueDate = date
       ? format(new Date(date), "HH:mm, EEE. do MMMM yyyy")
       : "";
-    const dateTag = _createTag("div", { class: "deadline" }, dueDate);
+    const dateTag = tagFactory.createTag("div", { class: "deadline" }, dueDate);
     return dateTag;
-  };
-
-  const _createHeader = (task) => {
-    const header = _createTag("div", { class: "task-header" });
-    const dateTag = _createDate(task.dueDate);
-
-    // append deadline and controls to header
-    header.appendChild(dateTag);
-    header.appendChild(_createControls(task));
-
-    return { header, dateTag };
-  };
-
-  const createElement = (task) => {
-    // create the task list element with the correct id and priority
-    const container = _createTag("li", {
-      id: task.id,
-      class: `task ${task.priority}-priority`,
-    });
-
-    const textTag = _createTag("div", { class: "task-text" }, task.title);
-
-    // listen for clicks on the task container
-    pubsub.publish("createCompleteListener", { container, task });
-
-    const { header, dateTag } = _createHeader(task);
-
-    // populate element with a header and title
-    container.appendChild(header);
-    container.appendChild(textTag);
-
-    return { container, textTag, dateTag };
   };
 
   // update the provided element's
@@ -102,6 +93,6 @@ const taskElement = ((doc) => {
     updatePriority,
     updateStatus,
   };
-})(document);
+})();
 
 export default taskElement;
