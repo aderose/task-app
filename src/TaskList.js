@@ -10,19 +10,27 @@ class TaskList {
     this.increment = 0;
     this.list = doc.createElement("ul");
 
-    // add header & list to container
-
-    const { header, titleTag } = this.createHeader();
+    // create list header and unpack
+    const { header, titleTag, add } = this.createHeader();
+    this.header = header;
     this.titleTag = titleTag;
-    this.container.appendChild(header);
-    this.container.appendChild(this.list);
+    this.add = add;
 
     // create menu item
-    this.menuItem = doc.createElement("li");
-    this.menuItem.setAttribute("class", "list-entry");
-    this.menuItem.textContent = this.name;
+    this.menuItem = this.createMenuItem();
+  }
 
+  // render the TaskList to the parent container then initialise functionality
+  render() {
+    this.container.appendChild(this.header);
+    this.container.appendChild(this.list);
     this.initialiseFunctionality();
+  }
+
+  // flush the list from the parent container
+  flush() {
+    this.container.innerHTML = "";
+    this.unsubscribeFromEvents();
   }
 
   // add a new task to the task list and render the result
@@ -36,7 +44,7 @@ class TaskList {
         false
       )
     );
-    this.render();
+    this.renderTasks();
   }
 
   // update the task associated with the given taskId with the new taskInfo
@@ -50,7 +58,7 @@ class TaskList {
   // render the task list by appending it to the provided container
   removeTask(task) {
     this.tasks.splice(this.getTaskIndex(task), 1);
-    this.render();
+    this.renderTasks();
   }
 
   // update the task & task element's status
@@ -69,7 +77,7 @@ class TaskList {
   }
 
   // render the task list by appending it to the provided container
-  render() {
+  renderTasks() {
     this.list.innerHTML = "";
     this.tasks.forEach((task) => this.list.appendChild(task.element.container));
   }
@@ -94,7 +102,15 @@ class TaskList {
     header.appendChild(titleTag);
     header.appendChild(add);
 
-    return { header, titleTag };
+    return { header, titleTag, add };
+  }
+
+  // create menu item for this task list
+  createMenuItem() {
+    const item = this.doc.createElement("li");
+    item.setAttribute("class", "list-entry");
+    item.textContent = this.name;
+    return item;
   }
 
   // provide functionality to all buttons are functional
@@ -104,7 +120,8 @@ class TaskList {
     pubsub.subscribe("removeTask", this.removeTask.bind(this));
     pubsub.subscribe("completeTask", this.updateTaskStatus);
     pubsub.publish("createTitleListener", this);
-    pubsub.publish("");
+    pubsub.publish("createMenuListener", this);
+    pubsub.publish("createAddListener", this.add);
   }
 
   // unsubscribe from all the task list events
@@ -153,6 +170,14 @@ class TaskList {
 
   set titleTag(titleTag) {
     this._titleTag = titleTag;
+  }
+
+  get header() {
+    return this._header;
+  }
+
+  set header(header) {
+    this._header = header;
   }
 }
 
