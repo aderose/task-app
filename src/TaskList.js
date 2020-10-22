@@ -21,6 +21,8 @@ class TaskList {
     this.menuItem = doc.createElement("li");
     this.menuItem.setAttribute("class", "list-entry");
     this.menuItem.textContent = this.name;
+
+    this.initialiseFunctionality();
   }
 
   // add a new task to the task list and render the result
@@ -102,6 +104,7 @@ class TaskList {
     pubsub.subscribe("removeTask", this.removeTask.bind(this));
     pubsub.subscribe("completeTask", this.updateTaskStatus);
     pubsub.publish("createTitleListener", this);
+    pubsub.publish("");
   }
 
   // unsubscribe from all the task list events

@@ -44,7 +44,6 @@ function listHandler(doc) {
       datetime: "2020-10-31T23:00",
       priority: "high",
     });
-    exampleList.initialiseFunctionality();
     _lists.push(exampleList);
   }
 }
