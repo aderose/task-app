@@ -15,13 +15,13 @@ const taskElement = (() => {
       task.title
     );
 
-    const { headerTag, dateTag } = _createHeader(task);
+    const { headerTag, dateTag, editTag, trashTag } = _createHeader(task);
 
     // populate element with a header and title
     container.appendChild(headerTag);
     container.appendChild(textTag);
 
-    return { container, textTag, dateTag };
+    return { container, textTag, dateTag, editTag, trashTag };
   };
 
   // create controls for each task element
