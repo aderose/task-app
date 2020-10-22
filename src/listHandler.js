@@ -53,7 +53,7 @@ function listHandler(doc) {
 
   // create example task list with a few tasks
   function _createExampleList(name) {
-    const exampleList = new TaskList(doc, _container, name);
+    const exampleList = new TaskList(_container, name);
     exampleList.createTask({
       title: "Example Task 1 - Low Priority",
       datetime: "2020-10-22T18:00",

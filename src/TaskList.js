@@ -1,14 +1,18 @@
 import Task from "./Task";
 import pubsub from "./pubsub";
+import tagFactory from "./tagFactory";
 
 class TaskList {
-  constructor(doc, container, name) {
+  constructor(container, name) {
     this.name = name;
     this.container = container;
-    this.doc = doc;
     this.tasks = [];
     this.increment = 0;
-    this.menuItem = this.createMenuItem();
+    this.menuItem = tagFactory.createTag(
+      "li",
+      { class: "list-entry" },
+      this.name
+    );
   }
 
   // add a new task to the task list and render the result
@@ -39,11 +43,6 @@ class TaskList {
     this.renderTasks();
   }
 
-  // get a task from the task list given an id
-  getTaskById(id) {
-    return this.tasks.find((x) => x.id === id);
-  }
-
   // render the task list by appending it to the provided container
   renderTasks() {
     this.container.innerHTML = "";
@@ -52,12 +51,9 @@ class TaskList {
     );
   }
 
-  // create menu item for this task list
-  createMenuItem() {
-    const item = this.doc.createElement("li");
-    item.setAttribute("class", "list-entry");
-    item.textContent = this.name;
-    return item;
+  // get a task from the task list given an id
+  getTaskById(id) {
+    return this.tasks.find((x) => x.id === id);
   }
 
   set name(name) {
