@@ -338,3 +338,10 @@ ul {
   opacity: 1;
   pointer-events: auto;
 }
+
+/* If the device is touch screen */
+@media (hover: none) {
+  .controls {
+    opacity: 1;
+  }
+}
