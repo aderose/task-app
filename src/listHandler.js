@@ -23,12 +23,7 @@ function listHandler(doc) {
 
   function renderMenu() {
     _menu.innerHTML = "";
-    _lists.forEach((list) => {
-      const entry = doc.createElement("li");
-      entry.setAttribute("class", "list-entry");
-      entry.textContent = list.name;
-      _menu.append(entry);
-    });
+    _lists.forEach((list) => _menu.append(list.menuItem));
   }
 
   // create example task list with a few tasks

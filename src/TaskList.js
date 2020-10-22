@@ -16,6 +16,12 @@ class TaskList {
     this.titleTag = titleTag;
     this.container.appendChild(header);
     this.container.appendChild(this.list);
+
+    // create menu item
+
+    this.menuItem = doc.createElement("li");
+    this.menuItem.setAttribute("class", "list-entry");
+    this.menuItem.textContent = this.name;
   }
 
   // add a new task to the task list and render the result
