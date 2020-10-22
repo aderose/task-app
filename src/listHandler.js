@@ -14,6 +14,11 @@ function listHandler(doc) {
   pubsub.publish("closeListListener", _closeSelection);
   pubsub.subscribe("changeList", _toggleListSelection);
   pubsub.subscribe("hideSelection", _toggleListSelection);
+  pubsub.subscribe("menuSelection", _makeMenuSelection);
+
+  function _makeMenuSelection(list) {
+    console.log(list);
+  }
 
   // toggle the list selection menu
   function _toggleListSelection() {
@@ -45,6 +50,7 @@ function listHandler(doc) {
       priority: "high",
     });
     _lists.push(exampleList);
+    exampleList.render();
   }
 }
 
