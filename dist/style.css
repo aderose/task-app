@@ -301,8 +301,8 @@ ul {
   border-radius: 50%;
   cursor: pointer;
   position: absolute;
-  top: -13px;
-  right: -13px;
+  top: -7px;
+  right: -7px;
   width: 26px;
   height: 26px;
   display: flex;
