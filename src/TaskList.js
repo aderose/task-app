@@ -14,7 +14,14 @@ class TaskList {
       this.name
     );
 
-    this._subscribeToEvents();
+    // publish a menuItemSelected event when the menuItem is clicked
+    pubsub.publish("createEventListener", {
+      element: this.menuItem,
+      type: "click",
+      fn: () => pubsub.publish("menuItemSelected", this.menuItem),
+    });
+
+    this._subscribeToTaskEvents();
   }
 
   // add a new task to the task list and render the result
@@ -60,14 +67,14 @@ class TaskList {
   }
 
   // subscribe to each of the task alteration events
-  _subscribeToEvents() {
+  _subscribeToTaskEvents() {
     pubsub.subscribe("createTask", this.createTask.bind(this));
     pubsub.subscribe("updateTask", this.updateTask.bind(this));
     pubsub.subscribe("deleteTask", this.deleteTask.bind(this));
   }
 
   // unsubscribe from each of the task alteration events
-  _unsubscribeFromEvents() {
+  _subscribeToTaskEvents() {
     pubsub.unsubscribe("createTask", this.createTask.bind(this));
     pubsub.unsubscribe("updateTask", this.updateTask.bind(this));
     pubsub.unsubscribe("deleteTask", this.deleteTask.bind(this));
