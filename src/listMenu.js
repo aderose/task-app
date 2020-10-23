@@ -1,17 +1,18 @@
 import pubsub from "./pubsub";
+import tagFactory from "./tagFactory";
 
-const listMenu = (doc) => {
-  const _container = doc.querySelector(".list-selection-container");
-  const _menu = doc.querySelector(".list-selection-container ul");
-  const _close = doc.querySelector(".select-close");
+const listMenu = () => {
+  const _container = tagFactory.getTagFromDoc(".list-selection-container");
+  const _menu = tagFactory.getTagFromDoc(".list-selection-container ul");
+  const _close = tagFactory.getTagFromDoc(".select-close");
   let isActive = false;
 
-  // listen for click on close button
-  pubsub.publish("closeListListener", _close);
-
-  // hide menu if the cross button is pressed
-  pubsub.subscribe("hideSelection", hide);
-  pubsub.subscribe("titleClicked", show);
+  // hide the menu when the close button is clicked
+  pubsub.publish("createEventListener", {
+    element: _close,
+    type: "click",
+    fn: hide,
+  });
 
   // show the menu if it is currently hidden
   function show(items) {
