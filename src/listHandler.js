@@ -5,16 +5,15 @@ import tagFactory from "./tagFactory";
 
 function listHandler() {
   const _lists = [];
-  const _container = tagFactory.getTagFromDoc(".list-container ul");
+  const _container = tagFactory.getTagFromDoc(".list-container");
+  const _listTag = tagFactory.createTag("ul");
   const _titleBtn = tagFactory.getTagFromDoc(".title");
   const _addTaskBtn = tagFactory.getTagFromDoc(".add");
   const _menu = listMenu();
 
   // create an example list to start with
   let _activeList = _createExampleList("Example List");
-
-  // set title to the current active list
-  _titleBtn.textContent = _activeList.name;
+  _makeMenuSelection(_activeList);
 
   // show menu when the title button is clicked
   pubsub.publish("createEventListener", {
@@ -42,16 +41,22 @@ function listHandler() {
 
   // make a new menu selection
   function _makeMenuSelection(list) {
+    // deactivate previous list
     _activeList.deactivate();
+
+    // update active list
     _activeList = list;
     _titleBtn.textContent = _activeList.name;
     _activeList.activate();
+
+    _container.appendChild(_listTag);
+
     _menu.hide();
   }
 
   // create example task list with a few tasks
   function _createExampleList(name) {
-    const exampleList = new TaskList(_container, name);
+    const exampleList = new TaskList(_listTag, name);
     ["low", "medium", "high"].forEach((v, i) => {
       exampleList.createTask({
         title: `Example Task ${i + 1} - ${v} priority`,
