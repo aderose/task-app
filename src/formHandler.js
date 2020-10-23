@@ -1,29 +1,42 @@
 import pubsub from "./pubsub";
+import tagFactory from "./tagFactory";
 
-const formHandler = (doc) => {
-  const formContainer = doc.querySelector(".form-container");
-  const form = doc.querySelector(".add-task-form");
-  const formHeader = doc.querySelector(".form-header");
-  const submit = doc.querySelector("#add");
-  const cancel = doc.querySelector("#cancel");
+const formHandler = () => {
+  const formContainer = tagFactory.getTagFromDoc(".form-container");
+  const form = tagFactory.getTagFromDoc(".add-task-form");
+  const formHeader = tagFactory.getTagFromDoc(".form-header");
+  const submit = tagFactory.getTagFromDoc("#add");
+  const cancel = tagFactory.getTagFromDoc("#cancel");
 
-  // add listeners to the form and cancel buttons through inputHandler
-  pubsub.publish("createFormListener", form);
-  pubsub.publish("createCancelListener", cancel);
+  // call submit form function when the form is submitted
+  pubsub.publish("createEventListener", {
+    element: form,
+    type: "submit",
+    fn: (e) => {
+      e.preventDefault();
+      submitForm();
+    },
+  });
 
-  // subscribe to all form events
+  // toggle form visibility if the cancel button is pressed
+  pubsub.publish("createEventListener", {
+    element: cancel,
+    type: "click",
+    fn: toggleForm,
+  });
+
+  // show form when either the add task or edit task button is clicked
   pubsub.subscribe("addTaskClicked", showForm);
   pubsub.subscribe("openEditForm", editForm);
-  pubsub.subscribe("submitForm", submitForm);
-  pubsub.subscribe("cancelForm", toggleForm);
 
+  // gather input and hide form when it is submitted
   function submitForm() {
     gatherInput(form);
     toggleForm();
   }
 
+  // gather task information from the form
   function gatherInput(form) {
-    // gather task information from the form
     const formData = new FormData(form);
     const taskInfo = {
       title: formData.get("title"),
@@ -32,9 +45,9 @@ const formHandler = (doc) => {
     };
 
     // publish respective event based on submit type
-    if (submit.value === "Add") pubsub.publish("addTask", taskInfo);
+    if (submit.value === "Add") pubsub.publish("createTask", taskInfo);
     if (submit.value === "Edit")
-      pubsub.publish("editTask", { id: Number(form.id), taskInfo });
+      pubsub.publish("updateTask", { id: Number(form.id), taskInfo });
   }
 
   function showForm() {

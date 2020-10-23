@@ -13,7 +13,8 @@ class TaskList {
       { class: "list-entry" },
       this.name
     );
-    pubsub.subscribe("deleteTask", this.deleteTask.bind(this));
+
+    this._subscribeToEvents();
   }
 
   // add a new task to the task list and render the result
@@ -32,7 +33,7 @@ class TaskList {
 
   // update the task associated with the given taskId with the new taskInfo
   updateTask({ id, taskInfo }) {
-    const task = this.getTaskById(id);
+    const task = this._getTaskById(id);
     task.title = taskInfo.title;
     task.dueDate = taskInfo.datetime;
     task.priority = taskInfo.priority;
@@ -54,16 +55,62 @@ class TaskList {
   }
 
   // get a task from the task list given an id
-  getTaskById(id) {
+  _getTaskById(id) {
     return this.tasks.find((x) => x.id === id);
+  }
+
+  // subscribe to each of the task alteration events
+  _subscribeToEvents() {
+    pubsub.subscribe("createTask", this.createTask.bind(this));
+    pubsub.subscribe("updateTask", this.updateTask.bind(this));
+    pubsub.subscribe("deleteTask", this.deleteTask.bind(this));
+  }
+
+  // unsubscribe from each of the task alteration events
+  _unsubscribeFromEvents() {
+    pubsub.unsubscribe("createTask", this.createTask.bind(this));
+    pubsub.unsubscribe("updateTask", this.updateTask.bind(this));
+    pubsub.unsubscribe("deleteTask", this.deleteTask.bind(this));
+  }
+
+  get name() {
+    return this._name;
   }
 
   set name(name) {
     this._name = name;
   }
 
-  get name() {
-    return this._name;
+  get container() {
+    return this._container;
+  }
+
+  set container(container) {
+    this._container = container;
+  }
+
+  get tasks() {
+    return this._tasks;
+  }
+
+  set tasks(tasks) {
+    this._tasks = tasks;
+  }
+
+  get increment() {
+    return this._increment;
+  }
+
+  set increment(increment) {
+    this._increment = increment;
+  }
+
+  get menuItem() {
+    return this._menuItem;
+  }
+
+  set menuItem(menuItem) {
+    this._menuItem = menuItem;
   }
 }
 
