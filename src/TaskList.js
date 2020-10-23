@@ -13,6 +13,7 @@ class TaskList {
       { class: "list-entry" },
       this.name
     );
+    this.subscriptions = this._subscribeToTaskEvents();
 
     // publish a menuItemSelected event when the menuItem is clicked
     pubsub.publish("createEventListener", {
@@ -20,27 +21,22 @@ class TaskList {
       type: "click",
       fn: () => pubsub.publish("menuItemSelected", this),
     });
-
-    this._subscribeToTaskEvents();
   }
 
   // add functionality to this TaskList object
   activate() {
-    console.log("Activated");
-    this._subscribeToTaskEvents();
+    this.subscriptions = this._subscribeToTaskEvents();
     this.tasks.forEach((task) => task.addEventListeners());
   }
 
   // remove functionality from this TaskList object
   deactivate() {
-    console.log("Deactivated");
-    this._unsubscribeFromTaskEvents();
+    this._unsubscribeFromTaskEvents(this.subscriptions);
     this.tasks.forEach((task) => task.removeEventListeners());
   }
 
   // add a new task to the task list and render the result
   createTask(info) {
-    console.log("called");
     const task = new Task(
       this.increment++,
       info.title,
@@ -83,16 +79,16 @@ class TaskList {
 
   // subscribe to each of the task alteration events
   _subscribeToTaskEvents() {
-    pubsub.subscribe("createTask", this.createTask.bind(this));
-    pubsub.subscribe("updateTask", this.updateTask.bind(this));
-    pubsub.subscribe("deleteTask", this.deleteTask.bind(this));
+    return [
+      pubsub.subscribe("createTask", this.createTask.bind(this)),
+      pubsub.subscribe("updateTask", this.updateTask.bind(this)),
+      pubsub.subscribe("deleteTask", this.deleteTask.bind(this)),
+    ];
   }
 
   // unsubscribe from each of the task alteration events
-  _unsubscribeFromTaskEvents() {
-    pubsub.unsubscribe("createTask", this.createTask.bind(this));
-    pubsub.unsubscribe("updateTask", this.updateTask.bind(this));
-    pubsub.unsubscribe("deleteTask", this.deleteTask.bind(this));
+  _unsubscribeFromTaskEvents(subscriptions) {
+    subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   get name() {
@@ -133,6 +129,14 @@ class TaskList {
 
   set menuItem(menuItem) {
     this._menuItem = menuItem;
+  }
+
+  get subscriptions() {
+    return this._subscriptions;
+  }
+
+  set subscriptions(subscriptions) {
+    this._subscriptions = subscriptions;
   }
 }
 
