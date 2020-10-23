@@ -9,11 +9,11 @@ const pubsub = (() => {
     const unsubscribe = () => {
       if (!events[name]) return;
       console.log(events[name]);
-      events[name] = events[name].filter((f) => f === callback);
+      events[name] = events[name].filter((f) => f !== callback);
     };
 
     // return the unsubscribe function for this event subscription
-    return unsubscribe;
+    return { unsubscribe };
   };
 
   // publish an event using the provided data
