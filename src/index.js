@@ -6,6 +6,6 @@ window.addEventListener("load", handleDocument);
 
 function handleDocument() {
   inputHandler();
-  listHandler(document);
   formHandler();
+  listHandler();
 }
