@@ -12,7 +12,6 @@ class TaskList {
       { class: "list-entry" },
       this.name
     );
-    this.subscriptions = this._subscribeToTaskEvents();
 
     // publish a menuItemSelected event when the menuItem is clicked
     pubsub.publish("createEventListener", {
@@ -30,6 +29,9 @@ class TaskList {
 
   // remove functionality from this TaskList object
   deactivate() {
+    // if the task list has no subscriptions, it musn't have been activated
+    // yet and therefore will have no event listeners
+    if (!this.subscriptions) return;
     this._unsubscribeFromTaskEvents(this.subscriptions);
     this.tasks.forEach((task) => task.removeEventListeners());
   }
