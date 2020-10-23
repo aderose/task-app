@@ -18,14 +18,29 @@ class TaskList {
     pubsub.publish("createEventListener", {
       element: this.menuItem,
       type: "click",
-      fn: () => pubsub.publish("menuItemSelected", this.menuItem),
+      fn: () => pubsub.publish("menuItemSelected", this),
     });
 
     this._subscribeToTaskEvents();
   }
 
+  // add functionality to this TaskList object
+  activate() {
+    console.log("Activated");
+    this._subscribeToTaskEvents();
+    this.tasks.forEach((task) => task.addEventListeners());
+  }
+
+  // remove functionality from this TaskList object
+  deactivate() {
+    console.log("Deactivated");
+    this._unsubscribeFromTaskEvents();
+    this.tasks.forEach((task) => task.removeEventListeners());
+  }
+
   // add a new task to the task list and render the result
   createTask(info) {
+    console.log("called");
     const task = new Task(
       this.increment++,
       info.title,
@@ -74,7 +89,7 @@ class TaskList {
   }
 
   // unsubscribe from each of the task alteration events
-  _subscribeToTaskEvents() {
+  _unsubscribeFromTaskEvents() {
     pubsub.unsubscribe("createTask", this.createTask.bind(this));
     pubsub.unsubscribe("updateTask", this.updateTask.bind(this));
     pubsub.unsubscribe("deleteTask", this.deleteTask.bind(this));
