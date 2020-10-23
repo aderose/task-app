@@ -9,10 +9,12 @@ class Task {
     this.priority = priority || "Low";
     this.isComplete = isComplete || false;
     this.element = taskElement.createElement(this);
+    this.listenersActive = false;
   }
 
   // set up event listeners on the task element
   addEventListeners() {
+    if (this.listenersActive) return;
     // update the task status when the element is clicked
     pubsub.publish("createEventListener", {
       element: this.element.container,
@@ -40,10 +42,12 @@ class Task {
         e.stopPropagation();
       },
     });
+    this.listenersActive = true;
   }
 
   // remove event listeners from the task element
   removeEventListeners() {
+    if (!this.listenersActive) return;
     // remove click listener on the container
     pubsub.publish("deleteEventListener", {
       element: this.element.container,
@@ -61,6 +65,7 @@ class Task {
       element: this.element.trashTag,
       type: "click",
     });
+    this.listenersActive = false;
   }
 
   // update the task status
@@ -121,6 +126,14 @@ class Task {
 
   get element() {
     return this._element;
+  }
+
+  set listenersActive(listenersActive) {
+    this._listenersActive = listenersActive;
+  }
+
+  get listenersActive() {
+    return this._listenersActive;
   }
 }
 
