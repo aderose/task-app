@@ -12,9 +12,9 @@ function listHandler() {
   // initialise the listMenu
   listMenu.init();
 
-  // create an example list to start with
+  // create two example lists and display the first
   let _activeList = _createExampleList("Example List");
-  _createExampleList("lololol");
+  _createExampleList("Example List 2");
   _selectList(_activeList);
 
   // show menu when the title button is clicked
@@ -34,12 +34,8 @@ function listHandler() {
   // call menu selection function when a menu item is selected
   pubsub.subscribe("menuItemSelected", _makeMenuSelection);
 
-  // show menu when the list title is clicked
-  pubsub.subscribe("changeList", _showMenu);
-
-  function _showMenu() {
-    listMenu.show(_lists);
-  }
+  // render the task list when the list is updated
+  pubsub.subscribe("taskListUpdated", _render);
 
   // make a new menu selection
   function _makeMenuSelection(list) {
@@ -47,7 +43,7 @@ function listHandler() {
     listMenu.hide();
   }
 
-  // select a new TaskList object
+  // select a new TaskList object and display it
   function _selectList(list) {
     // deactivate old list
     _activeList.deactivate();
@@ -55,25 +51,21 @@ function listHandler() {
     // update active list
     _activeList = list;
 
-    // update title to match the new list
-    _titleBtn.textContent = _activeList.name;
-
     // activate new list
     _activeList.activate();
 
-    // render the list of tasks for the new list
+    // render the new list of tasks
     _render();
   }
 
   // create example task list with a few tasks
   function _createExampleList(name) {
-    let list = ["do ya work", "do ya sleep", "do ya nothin"];
-    if (name === "lololol") list = ["list2 yaya", "list2 nono", "list2 mebe"];
+    let list = ["low priority", "medium priority", "high priority"];
+    if (name === "Example List 2") list = ["Task A", "Task B", "Task C"];
     const exampleList = new TaskList(name);
     ["low", "medium", "high"].forEach((v, i) => {
       exampleList.createTask({
         title: list[i],
-        // title: `Example Task ${i + 1} - ${v} priority`,
         datetime: `2020-10-0${i + 1}T18:00`,
         priority: v,
       });
@@ -84,6 +76,10 @@ function listHandler() {
 
   // render the active task to the browser
   function _render() {
+    // update title to match the new list
+    _titleBtn.textContent = _activeList.name;
+
+    // update the list container with the task element containers
     _container.innerHTML = "";
     _activeList.tasks.forEach((task) => {
       _container.appendChild(task.element.container);
