@@ -3,9 +3,8 @@ import pubsub from "./pubsub";
 import tagFactory from "./tagFactory";
 
 class TaskList {
-  constructor(container, name) {
+  constructor(name) {
     this.name = name;
-    this.container = container;
     this.tasks = [];
     this.increment = 0;
     this.menuItem = tagFactory.createTag(
@@ -46,7 +45,7 @@ class TaskList {
     );
     this.tasks.push(task);
     task.addEventListeners();
-    this.renderTasks();
+    pubsub.publish("taskListUpdated");
   }
 
   // update the task associated with the given taskId with the new taskInfo
@@ -61,15 +60,7 @@ class TaskList {
   deleteTask(task) {
     task.removeEventListeners();
     this.tasks = this.tasks.filter((t) => t !== task);
-    this.renderTasks();
-  }
-
-  // render the task list by appending it to the provided container
-  renderTasks() {
-    this.container.innerHTML = "";
-    this.tasks.forEach((task) =>
-      this.container.appendChild(task.element.container)
-    );
+    pubsub.publish("taskListUpdated");
   }
 
   // get a task from the task list given an id
@@ -97,14 +88,6 @@ class TaskList {
 
   set name(name) {
     this._name = name;
-  }
-
-  get container() {
-    return this._container;
-  }
-
-  set container(container) {
-    this._container = container;
   }
 
   get tasks() {
