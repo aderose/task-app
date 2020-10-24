@@ -329,10 +329,16 @@ ul {
   width: 100%;
   background-color: var(--secondary-color);
   border-radius: 5px;
-  padding: 0.5em 0.25em;
+  padding: 0.5em 0.5em;
   margin-bottom: 1em;
   cursor: pointer;
   word-break: break-all;
+  display: flex;
+  justify-content: space-between;
+}
+
+.list-entry:hover .controls {
+  opacity: 1;
 }
 
 .list-entry:last-of-type {

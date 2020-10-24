@@ -97,7 +97,7 @@ function listHandler() {
   // re-render the task list menu
   function _renderMenu() {
     _listMenu.innerHTML = "";
-    _lists.forEach((list) => _listMenu.appendChild(list.menuItem));
+    _lists.forEach((list) => _listMenu.appendChild(list.menuItem.container));
   }
 }
 

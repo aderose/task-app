@@ -7,15 +7,11 @@ class TaskList {
     this.name = name;
     this.tasks = [];
     this.increment = 0;
-    this.menuItem = tagFactory.createTag(
-      "li",
-      { class: "list-entry" },
-      this.name
-    );
+    this.menuItem = this._createMenuItem();
 
     // publish a menuItemSelected event when the menuItem is clicked
     pubsub.publish("createEventListener", {
-      element: this.menuItem,
+      element: this.menuItem.container,
       type: "click",
       fn: () => pubsub.publish("menuItemSelected", this),
     });
@@ -63,6 +59,26 @@ class TaskList {
     task.removeEventListeners();
     this.tasks = this.tasks.filter((t) => t !== task);
     pubsub.publish("taskListUpdated");
+  }
+
+  // create a menu itemm containing a delete and edit button
+  _createMenuItem() {
+    const container = tagFactory.createTag("li", { class: "list-entry" });
+    const name = tagFactory.createTag("p", {}, this.name);
+    const controls = tagFactory.createTag("div", { class: "controls" });
+    const editList = tagFactory
+      .createTag("button")
+      .appendChild(tagFactory.createTag("i", { class: "far fa-edit" }));
+    const deleteList = tagFactory
+      .createTag("button")
+      .appendChild(tagFactory.createTag("i", { class: "far fa-trash-alt" }));
+
+    controls.appendChild(editList);
+    controls.appendChild(deleteList);
+    container.appendChild(name);
+    container.appendChild(controls);
+
+    return { container, editList, deleteList };
   }
 
   // get a task from the task list given an id
