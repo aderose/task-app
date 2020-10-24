@@ -24,10 +24,17 @@
     <div class="form-container">
       <form class="add-task-form">
         <h2 class="form-header">Add Task</h2>
+        <i class="select-close close-add-form">+</i>
         <label for="title">Task</label>
-        <input type="text" name="title" id="title" autocomplete="off" />
+        <input
+          type="text"
+          name="title"
+          id="title"
+          autocomplete="off"
+          required
+        />
         <label for="datetime">Due Date</label>
-        <input type="datetime-local" name="datetime" id="datetime" />
+        <input type="datetime-local" name="datetime" id="datetime" required />
         <label for="priority">Priority</label>
         <select name="priority" id="priority">
           <option value="low">Low</option>
@@ -36,7 +43,6 @@
         </select>
         <div class="submission">
           <input class="form-action" type="submit" value="Add" id="add" />
-          <button class="form-action" type="button" id="cancel">Cancel</button>
         </div>
       </form>
     </div>

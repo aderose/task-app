@@ -207,6 +207,7 @@ ul {
   width: 90%;
   max-width: 400px;
   margin-top: 12em;
+  position: absolute;
 }
 
 .add-task-form * {
