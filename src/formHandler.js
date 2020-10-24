@@ -6,7 +6,7 @@ const formHandler = () => {
   const form = tagFactory.getTagFromDoc(".add-task-form");
   const formHeader = tagFactory.getTagFromDoc(".form-header");
   const submit = tagFactory.getTagFromDoc("#add");
-  const cancel = tagFactory.getTagFromDoc("#cancel");
+  const cancel = tagFactory.getTagFromDoc(".close-add-form");
 
   // call submit form function when the form is submitted
   pubsub.publish("createEventListener", {
