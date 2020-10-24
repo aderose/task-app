@@ -1,6 +1,5 @@
 import pubsub from "./pubsub";
 import TaskList from "./TaskList";
-import listMenu from "./listMenu";
 import tagFactory from "./tagFactory";
 
 function listHandler() {
@@ -8,20 +7,21 @@ function listHandler() {
   const _container = tagFactory.getTagFromDoc(".list-container ul");
   const _titleBtn = tagFactory.getTagFromDoc(".title");
   const _addTaskBtn = tagFactory.getTagFromDoc(".add");
-
-  // initialise the listMenu
-  listMenu.init();
+  const _listMenu = tagFactory.getTagFromDoc(".list-selection-container ul");
 
   // create two example lists and display the first
   let _activeList = _createExampleList("Example List");
   _createExampleList("Example List 2");
+  _renderMenu();
   _selectList(_activeList);
 
   // show menu when the title button is clicked
   pubsub.publish("createEventListener", {
     type: "click",
     element: _titleBtn,
-    fn: () => listMenu.show(_lists),
+    fn: () => {
+      pubsub.publish("createListFormOpen");
+    },
   });
 
   // publish "addTaskClicked" event when the add task button is clicked
@@ -40,7 +40,7 @@ function listHandler() {
   // make a new menu selection
   function _makeMenuSelection(list) {
     _selectList(list);
-    listMenu.hide();
+    pubsub.publish("createListFormHide");
   }
 
   // select a new TaskList object and display it
@@ -84,6 +84,12 @@ function listHandler() {
     _activeList.tasks.forEach((task) => {
       _container.appendChild(task.element.container);
     });
+  }
+
+  // re-render the task list menu
+  function _renderMenu() {
+    _listMenu.innerHTML = "";
+    _lists.forEach((list) => _listMenu.appendChild(list.menuItem));
   }
 }
 

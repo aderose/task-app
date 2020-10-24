@@ -29,6 +29,11 @@ class Form {
     this._toggle();
   }
 
+  // hide the form
+  hide() {
+    this._toggle();
+  }
+
   // listen for a form submission or an optional cancel
   _listen() {
     pubsub.publish("createEventListener", {
@@ -86,7 +91,7 @@ class Form {
     this.isActive = !this.isActive;
     // only listen for events if this form is active
     this.isActive ? this._listen() : this._stopListening();
-    this.container.classList.toggle("visible");
+    if (this.container) this.container.classList.toggle("visible");
   }
 }
 

@@ -1,5 +1,4 @@
 import pubsub from "./pubsub";
-import tagFactory from "./tagFactory";
 import Form from "./Form";
 
 const formHandler = () => {
@@ -21,6 +20,13 @@ const formHandler = () => {
     headerName: ".form-header",
   });
 
+  const createListForm = new Form({
+    type: "createList",
+    containerName: ".list-selection-container",
+    formName: ".add-list-form",
+    cancelName: ".close-select-list",
+  });
+
   pubsub.subscribe("createTaskFormOpen", () =>
     createTaskForm.show({
       defaults: {
@@ -40,6 +46,18 @@ const formHandler = () => {
       },
     })
   );
+
+  // show the task list menu (containing create list form)
+  pubsub.subscribe("createListFormOpen", () => {
+    createListForm.show({
+      defaults: {
+        "add-list": "Add",
+      },
+    });
+  });
+
+  // hide the task list menu (containing the create list form)
+  pubsub.subscribe("createListFormHide", () => createListForm.hide());
 };
 
 export default formHandler;
