@@ -8,12 +8,10 @@ function listHandler() {
   const _titleBtn = tagFactory.getTagFromDoc(".title");
   const _addTaskBtn = tagFactory.getTagFromDoc(".add");
   const _listMenu = tagFactory.getTagFromDoc(".list-selection-container ul");
+  let _activeList = undefined;
 
-  // create two example lists and display the first
-  let _activeList = _createExampleList("Example List");
-  _createExampleList("Example List 2");
-  _renderMenu();
-  _selectList(_activeList);
+  // create an example list to start with
+  _createList();
 
   // show menu when the title button is clicked
   pubsub.publish("createEventListener", {
@@ -37,6 +35,19 @@ function listHandler() {
   // render the task list when the list is updated
   pubsub.subscribe("taskListUpdated", _render);
 
+  // listen for when a new tasklist submission has occurred
+  pubsub.subscribe("createListSubmitted", _createList);
+
+  // create a new tasklist using the provided input
+  function _createList(input) {
+    const newList = input
+      ? new TaskList(input["add-list-input"])
+      : _createExampleList("Example List");
+    _lists.push(newList);
+    _renderMenu();
+    _selectList(newList);
+  }
+
   // make a new menu selection
   function _makeMenuSelection(list) {
     _selectList(list);
@@ -46,7 +57,7 @@ function listHandler() {
   // select a new TaskList object and display it
   function _selectList(list) {
     // deactivate old list
-    _activeList.deactivate();
+    if (_activeList) _activeList.deactivate();
 
     // update active list
     _activeList = list;
@@ -60,17 +71,14 @@ function listHandler() {
 
   // create example task list with a few tasks
   function _createExampleList(name) {
-    let list = ["low priority", "medium priority", "high priority"];
-    if (name === "Example List 2") list = ["Task A", "Task B", "Task C"];
     const exampleList = new TaskList(name);
     ["low", "medium", "high"].forEach((v, i) => {
       exampleList.createTask({
-        title: list[i],
+        title: `${v}-priority`,
         datetime: `2020-10-0${i + 1}T18:00`,
         priority: v,
       });
     });
-    _lists.push(exampleList);
     return exampleList;
   }
 
