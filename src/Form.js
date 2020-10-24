@@ -2,7 +2,7 @@ import tagFactory from "./tagFactory";
 import pubsub from "./pubsub";
 
 class Form {
-  constructor(type, containerName, formName, cancelName, headerName) {
+  constructor({ type, containerName, formName, cancelName, headerName }) {
     this.type = type;
     this.container = tagFactory.getTagFromDoc(containerName);
     this.form = tagFactory.getTagFromDoc(formName);
