@@ -66,7 +66,7 @@ class Form {
     });
   }
 
-  // publish a "(createTask|updateTask)Submitted" event with the gathered data
+  // publish a submission event for the form type and provide the gathered input
   _submit(e) {
     e.preventDefault();
     pubsub.publish(`${this.type}Submitted`, this._gatherInput());
