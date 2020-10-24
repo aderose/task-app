@@ -28,7 +28,7 @@ function listHandler() {
   pubsub.publish("createEventListener", {
     type: "click",
     element: _addTaskBtn,
-    fn: () => pubsub.publish("addTaskClicked"),
+    fn: () => pubsub.publish("createTaskFormOpen"),
   });
 
   // call menu selection function when a menu item is selected

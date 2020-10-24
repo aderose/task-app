@@ -28,7 +28,7 @@ class Task {
       type: "click",
       fn: (e) => {
         // open the edit task form
-        pubsub.publish("openEditForm", this);
+        pubsub.publish("updateTaskFormOpen", this);
         e.stopPropagation();
       },
     });

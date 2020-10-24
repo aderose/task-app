@@ -51,11 +51,11 @@ class TaskList {
   }
 
   // update the task associated with the given taskId with the new taskInfo
-  updateTask({ id, taskInfo }) {
-    const task = this._getTaskById(id);
-    task.title = taskInfo.title;
-    task.dueDate = taskInfo.datetime;
-    task.priority = taskInfo.priority;
+  updateTask(info) {
+    const task = this._getTaskById(Number(info.id));
+    task.title = info.title;
+    task.dueDate = info.datetime;
+    task.priority = info.priority;
   }
 
   // render the task list by appending it to the provided container
@@ -73,8 +73,8 @@ class TaskList {
   // subscribe to each of the task alteration events
   _subscribeToTaskEvents() {
     return [
-      pubsub.subscribe("createTask", this.createTask.bind(this)),
-      pubsub.subscribe("updateTask", this.updateTask.bind(this)),
+      pubsub.subscribe("createTaskSubmitted", this.createTask.bind(this)),
+      pubsub.subscribe("updateTaskSubmitted", this.updateTask.bind(this)),
       pubsub.subscribe("deleteTask", this.deleteTask.bind(this)),
     ];
   }

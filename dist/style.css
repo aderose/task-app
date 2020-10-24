@@ -260,6 +260,7 @@ ul {
 }
 
 .form-header {
+  text-transform: capitalize;
   margin-bottom: 1em;
 }
 
