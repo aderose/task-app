@@ -4,7 +4,7 @@ import tagFactory from "./tagFactory";
 const listMenu = (() => {
   const _container = tagFactory.getTagFromDoc(".list-selection-container");
   const _menu = tagFactory.getTagFromDoc(".list-selection-container ul");
-  const _close = tagFactory.getTagFromDoc(".select-close");
+  const _close = tagFactory.getTagFromDoc(".close-select-list");
   let isActive = false;
 
   function init() {
