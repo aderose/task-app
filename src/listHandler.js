@@ -12,6 +12,7 @@ function listHandler() {
 
   // create an example list to start with
   _createList();
+  subscribeToMenuEvents();
 
   // show menu when the title button is clicked
   pubsub.publish("createEventListener", {
@@ -29,14 +30,23 @@ function listHandler() {
     fn: () => pubsub.publish("createTaskFormOpen"),
   });
 
-  // call menu selection function when a menu item is selected
-  pubsub.subscribe("menuItemSelected", _makeMenuSelection);
-
   // render the task list when the list is updated
   pubsub.subscribe("taskListUpdated", _render);
 
-  // listen for when a new tasklist submission has occurred
-  pubsub.subscribe("createListSubmitted", _createList);
+  function subscribeToMenuEvents() {
+    pubsub.subscribe("menuItemSelected", _makeMenuSelection);
+    pubsub.subscribe("createListSubmitted", _createList);
+    pubsub.subscribe("updateTaskList", _updateTaskList);
+    pubsub.subscribe("deleteTaskList", _deleteTaskList);
+  }
+
+  function _updateTaskList(taskList) {
+    console.log("update list");
+  }
+
+  function _deleteTaskList(taskList) {
+    console.log("delete list");
+  }
 
   // create a new tasklist using the provided input
   function _createList(input) {

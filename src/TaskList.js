@@ -8,18 +8,13 @@ class TaskList {
     this.tasks = [];
     this.increment = 0;
     this.menuItem = this._createMenuItem();
-
-    // publish a menuItemSelected event when the menuItem is clicked
-    pubsub.publish("createEventListener", {
-      element: this.menuItem.container,
-      type: "click",
-      fn: () => pubsub.publish("menuItemSelected", this),
-    });
+    this.listenersActive = false;
   }
 
   // add functionality to this TaskList object
   activate() {
     this.subscriptions = this._subscribeToTaskEvents();
+    this.addEventListeners();
     this.tasks.forEach((task) => task.addEventListeners());
   }
 
@@ -29,6 +24,7 @@ class TaskList {
     // yet and therefore will have no event listeners
     if (!this.subscriptions) return;
     this._unsubscribeFromTaskEvents(this.subscriptions);
+    this.removeEventListeners();
     this.tasks.forEach((task) => task.removeEventListeners());
   }
 
@@ -66,24 +62,70 @@ class TaskList {
     const container = tagFactory.createTag("li", { class: "list-entry" });
     const name = tagFactory.createTag("p", {}, this.name);
     const controls = tagFactory.createTag("div", { class: "controls" });
-    const editList = tagFactory
+    const updateList = tagFactory
       .createTag("button")
       .appendChild(tagFactory.createTag("i", { class: "far fa-edit" }));
     const deleteList = tagFactory
       .createTag("button")
       .appendChild(tagFactory.createTag("i", { class: "far fa-trash-alt" }));
 
-    controls.appendChild(editList);
+    controls.appendChild(updateList);
     controls.appendChild(deleteList);
     container.appendChild(name);
     container.appendChild(controls);
 
-    return { container, editList, deleteList };
+    return { container, name, updateList, deleteList };
   }
 
-  // get a task from the task list given an id
-  _getTaskById(id) {
-    return this.tasks.find((x) => x.id === id);
+  _updateMenuItem() {}
+
+  addEventListeners() {
+    if (this.listenersActive) return;
+    // publish a menuItemSelected event when the menuItem is clicked
+    pubsub.publish("createEventListener", {
+      element: this.menuItem.container,
+      type: "click",
+      fn: () => pubsub.publish("menuItemSelected", this),
+    });
+
+    pubsub.publish("createEventListener", {
+      element: this.menuItem.updateList,
+      type: "click",
+      fn: (e) => {
+        pubsub.publish("updateTaskList", this);
+        e.stopPropagation();
+      },
+    });
+
+    pubsub.publish("createEventListener", {
+      element: this.menuItem.deleteList,
+      type: "click",
+      fn: (e) => {
+        pubsub.publish("deleteTaskList", this);
+        e.stopPropagation();
+      },
+    });
+    this.listenersActive = true;
+  }
+
+  removeEventListeners() {
+    if (!this.listenersActive) return;
+    // publish a menuItemSelected event when the menuItem is clicked
+    pubsub.publish("deleteEventListener", {
+      element: this.menuItem.container,
+      type: "click",
+    });
+
+    pubsub.publish("deleteEventListener", {
+      element: this.menuItem.updateList,
+      type: "click",
+    });
+
+    pubsub.publish("deleteEventListener", {
+      element: this.menuItem.deleteList,
+      type: "click",
+    });
+    this.listenersActive = false;
   }
 
   // subscribe to each of the task alteration events
@@ -98,6 +140,11 @@ class TaskList {
   // unsubscribe from each of the task alteration events
   _unsubscribeFromTaskEvents(subscriptions) {
     subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  // get a task from the task list given an id
+  _getTaskById(id) {
+    return this.tasks.find((x) => x.id === id);
   }
 
   get name() {
