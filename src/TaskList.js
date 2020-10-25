@@ -28,6 +28,14 @@ class TaskList {
     this.tasks.forEach((task) => task.removeEventListeners());
   }
 
+  // remove this task list
+  remove() {
+    this.deactivate();
+    this.removeMenuListeners();
+    this.name = "";
+    this.tasks = [];
+  }
+
   // add a new task to the task list and render the result
   createTask(info) {
     const task = new Task(

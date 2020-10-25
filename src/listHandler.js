@@ -3,11 +3,11 @@ import TaskList from "./TaskList";
 import tagFactory from "./tagFactory";
 
 function listHandler() {
-  const _lists = [];
   const _container = tagFactory.getTagFromDoc(".list-container ul");
   const _titleBtn = tagFactory.getTagFromDoc(".title");
   const _addTaskBtn = tagFactory.getTagFromDoc(".add");
   const _listMenu = tagFactory.getTagFromDoc(".list-selection-container ul");
+  let _lists = [];
   let increment = 0;
   let _activeList = undefined;
 
@@ -80,9 +80,12 @@ function listHandler() {
     taskList.updateMenuItem();
   }
 
-  // TODO: Complete this!
+  // Delete the provided task list
   function _deleteList(taskList) {
-    console.log("delete list");
+    taskList.remove();
+    _lists = _lists.filter((list) => list !== taskList);
+    _render();
+    _renderMenu();
   }
 
   // create a new tasklist using the provided input
@@ -132,7 +135,7 @@ function listHandler() {
   // render the active task to the browser
   function _render() {
     // update title to match the new list
-    _titleBtn.textContent = _activeList.name;
+    _titleBtn.textContent = _activeList.name || "Click here to add list";
 
     // update the list container with the task element containers
     _container.innerHTML = "";
