@@ -10,12 +10,12 @@ class TaskList {
     this.increment = 0;
     this.menuItem = this._createMenuItem();
     this.listenersActive = false;
+    this.addMenuListeners();
   }
 
   // add functionality to this TaskList object
   activate() {
     this.subscriptions = this._subscribeToTaskEvents();
-    this.addEventListeners();
     this.tasks.forEach((task) => task.addEventListeners());
   }
 
@@ -25,7 +25,6 @@ class TaskList {
     // yet and therefore will have no event listeners
     if (!this.subscriptions) return;
     this._unsubscribeFromTaskEvents(this.subscriptions);
-    this.removeEventListeners();
     this.tasks.forEach((task) => task.removeEventListeners());
   }
 
@@ -113,7 +112,7 @@ class TaskList {
     }
   }
 
-  addEventListeners() {
+  addMenuListeners() {
     if (this.listenersActive) return;
     // publish a menuItemSelected event when the menuItem is clicked
     pubsub.publish("createEventListener", {
@@ -142,7 +141,7 @@ class TaskList {
     this.listenersActive = true;
   }
 
-  removeEventListeners() {
+  removeMenuListeners() {
     if (!this.listenersActive) return;
     // publish a menuItemSelected event when the menuItem is clicked
     pubsub.publish("deleteEventListener", {

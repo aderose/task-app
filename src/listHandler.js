@@ -44,7 +44,7 @@ function listHandler() {
 
   // open the list update form in the repsective menu item container
   function _commenceUpdateList(taskList) {
-    taskList.removeEventListeners();
+    taskList.removeMenuListeners();
     taskList.updateMenuItem("form");
 
     // create form object to listen for changes
@@ -68,7 +68,7 @@ function listHandler() {
     taskList.updateName(input["list-name"]);
     if (_activeList === taskList) _titleBtn.textContent = input["list-name"];
     _renderMenu();
-    taskList.addEventListeners();
+    taskList.addMenuListeners();
     taskList.updateMenuItem();
   }
 
