@@ -8,6 +8,7 @@ function listHandler() {
   const _titleBtn = tagFactory.getTagFromDoc(".title");
   const _addTaskBtn = tagFactory.getTagFromDoc(".add");
   const _listMenu = tagFactory.getTagFromDoc(".list-selection-container ul");
+  let increment = 0;
   let _activeList = undefined;
 
   // create an example list to start with
@@ -36,22 +37,50 @@ function listHandler() {
   function subscribeToMenuEvents() {
     pubsub.subscribe("menuItemSelected", _makeMenuSelection);
     pubsub.subscribe("createListSubmitted", _createList);
-    pubsub.subscribe("updateTaskList", _updateTaskList);
-    pubsub.subscribe("deleteTaskList", _deleteTaskList);
+    pubsub.subscribe("updateTaskList", _commenceUpdateList);
+    pubsub.subscribe("updateListSubmitted", _completeUpdateList);
+    pubsub.subscribe("deleteTaskList", _deleteList);
   }
 
-  function _updateTaskList(taskList) {
-    console.log("update list");
+  // open the list update form in the repsective menu item container
+  function _commenceUpdateList(taskList) {
+    taskList.removeEventListeners();
+    taskList.updateMenuItem("form");
+
+    // create form object to listen for changes
+    pubsub.publish("createForm", {
+      type: "updateList",
+      formName: `.update-${taskList.id}`,
+    });
+
+    const defaults = {};
+    defaults[taskList.id] = taskList.name;
+
+    pubsub.publish("showForm", {
+      formName: `.update-${taskList.id}`,
+      id: taskList.id,
+      defaults: defaults,
+    });
   }
 
-  function _deleteTaskList(taskList) {
+  function _completeUpdateList(input) {
+    const taskList = _getListById(Number(input.id));
+    taskList.updateName(input["list-name"]);
+    if (_activeList === taskList) _titleBtn.textContent = input["list-name"];
+    _renderMenu();
+    taskList.addEventListeners();
+    taskList.updateMenuItem();
+  }
+
+  // TODO: Complete this!
+  function _deleteList(taskList) {
     console.log("delete list");
   }
 
   // create a new tasklist using the provided input
   function _createList(input) {
     const newList = input
-      ? new TaskList(input["add-list-input"])
+      ? new TaskList(increment++, input["add-list-input"])
       : _createExampleList("Example List");
     _lists.push(newList);
     _renderMenu();
@@ -81,7 +110,7 @@ function listHandler() {
 
   // create example task list with a few tasks
   function _createExampleList(name) {
-    const exampleList = new TaskList(name);
+    const exampleList = new TaskList(increment++, name);
     ["low", "medium", "high"].forEach((v, i) => {
       exampleList.createTask({
         title: `${v}-priority`,
@@ -108,6 +137,11 @@ function listHandler() {
   function _renderMenu() {
     _listMenu.innerHTML = "";
     _lists.forEach((list) => _listMenu.appendChild(list.menuItem.container));
+  }
+
+  // get task list by id
+  function _getListById(id) {
+    return _lists.find((list) => list.id === id);
   }
 }
 

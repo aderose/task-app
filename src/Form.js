@@ -76,7 +76,10 @@ class Form {
   // gather all form input values
   _gatherInput() {
     const input = { id: this._getId() };
-    new FormData(this.form).forEach((val, key) => (input[key] = val));
+    const formData = new FormData(this.form);
+    console.log(this.form);
+    console.log(formData);
+    formData.forEach((val, key) => (input[key] = val));
     return input;
   }
 

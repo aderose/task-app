@@ -398,6 +398,48 @@ ul {
   filter: brightness(115%);
 }
 
+/* update list form styling */
+.update-list-form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.update-list-input {
+  padding: 0.35em;
+  font-family: inherit;
+  padding-right: 2.1em;
+  width: 100%;
+  border: none;
+  border-radius: 3px;
+}
+
+.update-list-submit {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 0.5em;
+  display: flex;
+  margin: auto 0;
+}
+
+.update-list-submit i {
+  color: var(--main-color);
+  font-size: 1.2em;
+  cursor: pointer;
+  margin: auto 0;
+}
+
+.update-list-submit:hover i {
+  filter: brightness(115%);
+}
+
+.update-list-input:focus,
+.update-list-submit:focus {
+  outline: none;
+}
+
 /* If the device is touch screen */
 @media (hover: none) {
   .controls {

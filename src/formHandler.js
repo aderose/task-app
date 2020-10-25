@@ -2,6 +2,31 @@ import pubsub from "./pubsub";
 import Form from "./Form";
 
 const formHandler = () => {
+  const forms = {};
+
+  pubsub.subscribe("createForm", createForm);
+  pubsub.subscribe("showForm", showForm);
+
+  function createForm({
+    type,
+    containerName,
+    formName,
+    cancelName,
+    headerName,
+  }) {
+    forms[formName] = new Form({
+      type,
+      containerName,
+      formName,
+      cancelName,
+      headerName,
+    });
+  }
+
+  function showForm({ formName, id, defaults }) {
+    if (forms[formName]) forms[formName].show({ id, defaults });
+  }
+
   // create a form object for the add task form & listen for events
   const createTaskForm = new Form({
     type: "createTask",

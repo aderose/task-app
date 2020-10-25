@@ -3,7 +3,8 @@ import pubsub from "./pubsub";
 import tagFactory from "./tagFactory";
 
 class TaskList {
-  constructor(name) {
+  constructor(id, name) {
+    this.id = id;
     this.name = name;
     this.tasks = [];
     this.increment = 0;
@@ -57,27 +58,60 @@ class TaskList {
     pubsub.publish("taskListUpdated");
   }
 
+  _createEditForm() {
+    const container = tagFactory.createTag("form", {
+      class: `update-list-form update-${this.id}`,
+    });
+    const input = tagFactory.createTag("input", {
+      type: "text",
+      class: "update-list-input",
+      name: "list-name",
+      id: this.id,
+    });
+    const submit = tagFactory.createTag("button", {
+      type: "submit",
+      class: "update-list-submit",
+    });
+    submit.appendChild(
+      tagFactory.createTag("i", { class: "far fa-check-circle" })
+    );
+
+    container.appendChild(input);
+    container.appendChild(submit);
+
+    return { container, input, submit };
+  }
+
   // create a menu itemm containing a delete and edit button
   _createMenuItem() {
     const container = tagFactory.createTag("li", { class: "list-entry" });
     const name = tagFactory.createTag("p", {}, this.name);
     const controls = tagFactory.createTag("div", { class: "controls" });
-    const updateList = tagFactory
-      .createTag("button")
-      .appendChild(tagFactory.createTag("i", { class: "far fa-edit" }));
-    const deleteList = tagFactory
-      .createTag("button")
-      .appendChild(tagFactory.createTag("i", { class: "far fa-trash-alt" }));
+    const updateList = tagFactory.createTag("button");
+    updateList.appendChild(tagFactory.createTag("i", { class: "far fa-edit" }));
+    const deleteList = tagFactory.createTag("button");
+    deleteList.appendChild(
+      tagFactory.createTag("i", { class: "far fa-trash-alt" })
+    );
+    const form = this._createEditForm();
 
     controls.appendChild(updateList);
     controls.appendChild(deleteList);
     container.appendChild(name);
     container.appendChild(controls);
 
-    return { container, name, updateList, deleteList };
+    return { container, name, updateList, deleteList, form, controls };
   }
 
-  _updateMenuItem() {}
+  updateMenuItem(type) {
+    this.menuItem.container.innerHTML = "";
+    if (type === "form") {
+      this.menuItem.container.appendChild(this.menuItem.form.container);
+    } else {
+      this.menuItem.container.appendChild(this.menuItem.name);
+      this.menuItem.container.appendChild(this.menuItem.controls);
+    }
+  }
 
   addEventListeners() {
     if (this.listenersActive) return;
@@ -145,6 +179,19 @@ class TaskList {
   // get a task from the task list given an id
   _getTaskById(id) {
     return this.tasks.find((x) => x.id === id);
+  }
+
+  updateName(name) {
+    this.name = name;
+    this.menuItem.name.textContent = this.name;
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  set id(id) {
+    this._id = id;
   }
 
   get name() {
