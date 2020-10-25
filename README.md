@@ -13,3 +13,5 @@ This allows you the user:
 - Update that task with new information
 - Delete the task if it's no longer relevant
 - Complete the task by clicking on it
+
+All data is stored to localStorage when the user leaves the page.
