@@ -15,6 +15,9 @@ const taskElement = (() => {
       task.title
     );
 
+    // if the task is complete, strike through the text
+    if (task.isComplete) textTag.classList.toggle("completed");
+
     const { headerTag, dateTag, editTag, trashTag } = _createHeader(task);
 
     // populate element with a header and title

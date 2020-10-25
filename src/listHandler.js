@@ -11,9 +11,22 @@ function listHandler() {
   let increment = 0;
   let _activeList = undefined;
 
-  // create an example list to start with
-  _createList();
+  pubsub.subscribe("storageRetrieved", init);
+  pubsub.publish("getStorage");
   subscribeToMenuEvents();
+
+  function init(storage) {
+    // if there is no storage, create an example list and select it
+    if (!storage) return _selectList(_createList());
+    increment = storage.listIncrement;
+    storage.lists.forEach((list) => {
+      const taskList = _createList(list);
+      list.tasks.forEach((task) => taskList.createTask(task));
+    });
+
+    // select the previously active list
+    _selectList(_getListById(Number(storage.activeId)));
+  }
 
   // show menu when the title button is clicked
   pubsub.publish("createEventListener", {
@@ -31,15 +44,19 @@ function listHandler() {
     fn: () => pubsub.publish("createTaskFormOpen"),
   });
 
-  // render the task list when the list is updated
-  pubsub.subscribe("taskListUpdated", _render);
-
   function subscribeToMenuEvents() {
     pubsub.subscribe("menuItemSelected", _makeMenuSelection);
     pubsub.subscribe("createListSubmitted", _createList);
     pubsub.subscribe("updateTaskList", _commenceUpdateList);
     pubsub.subscribe("updateListSubmitted", _completeUpdateList);
     pubsub.subscribe("deleteTaskList", _deleteList);
+  }
+
+  // update local storage and re-render the list
+  pubsub.subscribe("taskListUpdated", taskListUpdated);
+  function taskListUpdated() {
+    _render();
+    _updateStorage();
   }
 
   // create the edit list form and show it to the user
@@ -78,6 +95,8 @@ function listHandler() {
 
     // switch menu item back to uneditable form
     taskList.updateMenuItem();
+
+    _updateStorage();
   }
 
   // Delete the provided task list
@@ -86,16 +105,25 @@ function listHandler() {
     _lists = _lists.filter((list) => list !== taskList);
     _render();
     _renderMenu();
+    _updateStorage();
   }
 
   // create a new tasklist using the provided input
   function _createList(input) {
     const newList = input
-      ? new TaskList(increment++, input["add-list-input"])
+      ? new TaskList(
+          Number(input.id) === input.id ? input.id : increment++,
+          input["add-list-input"] || input.name,
+          input.taskIncrement
+        )
       : _createExampleList("Example List");
     _lists.push(newList);
     _renderMenu();
-    _selectList(newList);
+    _updateStorage();
+
+    // if we are not loading from storage, select the new list
+    if (input && !input.name) _selectList(newList);
+    return newList;
   }
 
   // make a new menu selection
@@ -117,6 +145,9 @@ function listHandler() {
 
     // render the new list of tasks
     _render();
+
+    // update storage with the new activeId
+    _updateStorage();
   }
 
   // create example task list with a few tasks
@@ -148,6 +179,37 @@ function listHandler() {
   function _renderMenu() {
     _listMenu.innerHTML = "";
     _lists.forEach((list) => _listMenu.appendChild(list.menuItem.container));
+  }
+
+  // update storage with current data
+  function _updateStorage() {
+    const storage = {
+      activeId: (_activeList || {}).id,
+      listIncrement: increment,
+      lists: [],
+    };
+
+    _lists.forEach((list) => {
+      const taskList = {
+        id: list.id,
+        name: list.name,
+        taskIncrement: list.increment,
+        tasks: [],
+      };
+
+      list.tasks.forEach((task) => {
+        taskList.tasks.push({
+          id: task.id,
+          title: task.title,
+          datetime: task.dueDate,
+          priority: task.priority,
+          isComplete: task.isComplete,
+        });
+      });
+
+      storage.lists.push(taskList);
+    });
+    pubsub.publish("updateStorage", storage);
   }
 
   // get task list by id

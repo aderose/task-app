@@ -72,6 +72,8 @@ class Task {
   updateStatus() {
     this.isComplete = !this.isComplete;
     taskElement.updateStatus(this.element);
+    // called so we can update local storage
+    pubsub.publish("taskListUpdated");
   }
 
   set id(id) {

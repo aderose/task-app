@@ -3,11 +3,11 @@ import pubsub from "./pubsub";
 import tagFactory from "./tagFactory";
 
 class TaskList {
-  constructor(id, name) {
+  constructor(id, name, increment) {
     this.id = id;
     this.name = name;
     this.tasks = [];
-    this.increment = 0;
+    this.increment = increment || 0;
     this.menuItem = this._createMenuItem();
     this.listenersActive = false;
     this.addMenuListeners();
@@ -39,11 +39,11 @@ class TaskList {
   // add a new task to the task list and render the result
   createTask(info) {
     const task = new Task(
-      this.increment++,
+      Number(info.id) === info.id ? info.id : this.increment++,
       info.title,
       info.datetime,
       info.priority,
-      false
+      info.isComplete || false
     );
     this.tasks.push(task);
     task.addEventListeners();
@@ -56,6 +56,8 @@ class TaskList {
     task.title = info.title;
     task.dueDate = info.datetime;
     task.priority = info.priority;
+    // publish taskListUpdated so that we can update local storage
+    pubsub.publish("taskListUpdated");
   }
 
   // render the task list by appending it to the provided container
