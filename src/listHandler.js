@@ -42,17 +42,21 @@ function listHandler() {
     pubsub.subscribe("deleteTaskList", _deleteList);
   }
 
-  // open the list update form in the repsective menu item container
+  // create the edit list form and show it to the user
   function _commenceUpdateList(taskList) {
+    // remove event listeners from the menu item
     taskList.removeMenuListeners();
+
+    // switch the menu item display over to a form
     taskList.updateMenuItem("form");
 
-    // create form object to listen for changes
+    // create form object for the current menu item
     pubsub.publish("createForm", {
       type: "updateList",
       formName: `.update-${taskList.id}`,
     });
 
+    // show the form and listen for a submission event
     const defaults = {};
     defaults[taskList.id] = taskList.name;
 
@@ -63,12 +67,16 @@ function listHandler() {
     });
   }
 
+  // update the task list title provided the given input
   function _completeUpdateList(input) {
     const taskList = _getListById(Number(input.id));
+    // update tasklist name in each interface
     taskList.updateName(input["list-name"]);
     if (_activeList === taskList) _titleBtn.textContent = input["list-name"];
-    _renderMenu();
+    // re-add listeners to the menu controls
     taskList.addMenuListeners();
+
+    // switch menu item back to uneditable form
     taskList.updateMenuItem();
   }
 
