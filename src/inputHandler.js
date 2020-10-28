@@ -1,12 +1,8 @@
-import pubsub from "./pubsub";
+import pubsub from './pubsub';
 
 // handle all document event listeners
 const inputHandler = () => {
   const activeListeners = [];
-
-  // subscribe to the relevant events
-  pubsub.subscribe("createEventListener", createEventListener);
-  pubsub.subscribe("deleteEventListener", deleteEventListener);
 
   // create an event listener for the provided properties
   function createEventListener({ element, type, fn }) {
@@ -22,10 +18,7 @@ const inputHandler = () => {
     });
 
     // if no listener is found
-    if (index === -1) {
-      console.log("deleteEventListener: no listener found!");
-      return -1;
-    }
+    if (index === -1) console.log('deleteEventListener: no listener found!');
 
     // remove listener from active listeners
     const listener = activeListeners.splice(index, 1)[0];
@@ -33,6 +26,10 @@ const inputHandler = () => {
     // remove event listener from the element.
     listener.element.removeEventListener(listener.type, listener.fn);
   }
+
+  // subscribe to the relevant events
+  pubsub.subscribe('createEventListener', createEventListener);
+  pubsub.subscribe('deleteEventListener', deleteEventListener);
 };
 
 export default inputHandler;

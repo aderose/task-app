@@ -1,6 +1,6 @@
 # Task List app
 
-Basic implementation of a task list app which saves todos to local storage.
+Basic implementation of a web-based task list app which stores lists of tasks.
 
 [View the implementation here](https://aderose.github.io/task-app/dist/index.html)
 

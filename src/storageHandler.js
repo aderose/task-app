@@ -1,27 +1,20 @@
-import pubsub from "./pubsub";
+import pubsub from './pubsub';
 
 function storageHandler() {
-  let storage = undefined;
-
-  pubsub.subscribe("updateStorage", updateStorage);
-  pubsub.subscribe("getStorage", getStorage);
+  const storage = JSON.parse(localStorage.getItem('data'));
 
   // update the localstorage data
   function updateStorage(data) {
-    localStorage.setItem("data", JSON.stringify(data));
-  }
-
-  // get data from local storage and store it
-  function pullStorage() {
-    storage = JSON.parse(localStorage.getItem("data"));
+    localStorage.setItem('data', JSON.stringify(data));
   }
 
   // publish a storage retrieved event with the retrieved storage
   function getStorage() {
-    pubsub.publish("storageRetrieved", storage);
+    pubsub.publish('storageRetrieved', storage);
   }
 
-  return { pullStorage };
+  pubsub.subscribe('updateStorage', updateStorage);
+  pubsub.subscribe('getStorage', getStorage);
 }
 
 export default storageHandler;
