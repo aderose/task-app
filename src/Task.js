@@ -1,7 +1,7 @@
 import pubsub from './pubsub';
 import TaskElement from './TaskElement';
 
-class Task {
+export default class Task {
   constructor(
     id,
     title = '',
@@ -16,6 +16,15 @@ class Task {
     this.isComplete = isComplete;
     this.element = new TaskElement(this);
     this.listenersActive = false;
+
+    // create the task edit form
+    pubsub.publish('createForm', {
+      type: 'updateTask',
+      containerName: '.form-container',
+      formName: '.add-task-form',
+      cancelName: '.close-add-form',
+      headerName: '.form-header',
+    });
   }
 
   // set up event listeners on the task element
@@ -34,7 +43,16 @@ class Task {
       type: 'click',
       fn: (e) => {
         // open the edit task form
-        pubsub.publish('updateTaskFormOpen', this);
+        pubsub.publish('showForm', {
+          formName: '.add-task-form',
+          id: this.id,
+          defaults: {
+            title: this.title,
+            datetime: this.dueDate,
+            priority: this.priority,
+            submit: 'Edit',
+          },
+        });
         e.stopPropagation();
       },
     });
@@ -100,5 +118,3 @@ class Task {
     if (this.element) this.element.setPriority(priority);
   }
 }
-
-export default Task;

@@ -2,7 +2,7 @@ import pubsub from './pubsub';
 import TaskList from './TaskList';
 import tagFactory from './tagFactory';
 
-function listHandler() {
+export default function listHandler() {
   const container = tagFactory.getTagFromDoc('.list-container ul');
   const titleBtn = tagFactory.getTagFromDoc('.title');
   const addTaskBtn = tagFactory.getTagFromDoc('.add');
@@ -168,7 +168,7 @@ function listHandler() {
   // make a new menu selection
   function makeMenuSelection(list) {
     selectList(list);
-    pubsub.publish('createListFormHide');
+    pubsub.publish('hideForm', '.add-list-form');
   }
 
   function taskListUpdated() {
@@ -206,21 +206,47 @@ function listHandler() {
   // get storage on initialisation
   pubsub.publish('getStorage');
 
-  // show menu when the title button is clicked
+  // create a form object for the add list form
+  pubsub.publish('createForm', {
+    type: 'createList',
+    containerName: '.list-selection-container',
+    formName: '.add-list-form',
+    cancelName: '.close-select-list',
+  });
+
+  // show list selection menu when the title button is clicked
   pubsub.publish('createEventListener', {
     type: 'click',
     element: titleBtn,
     fn: () => {
-      pubsub.publish('createListFormOpen');
+      pubsub.publish('showForm', {
+        formName: '.add-list-form',
+        defaults: {
+          'add-list': 'Add',
+        },
+      });
     },
   });
 
-  // publish "addTaskClicked" event when the add task button is clicked
+  // create a form object for the add task form
+  pubsub.publish('createForm', {
+    type: 'createTask',
+    containerName: '.form-container',
+    formName: '.add-task-form',
+    cancelName: '.close-add-form',
+    headerName: '.form-header',
+  });
+
+  // show the add task form when the add task button is clicked
   pubsub.publish('createEventListener', {
     type: 'click',
     element: addTaskBtn,
-    fn: () => pubsub.publish('createTaskFormOpen'),
+    fn: () =>
+      pubsub.publish('showForm', {
+        formName: '.add-task-form',
+        defaults: {
+          submit: 'Add',
+        },
+      }),
   });
 }
-
-export default listHandler;
