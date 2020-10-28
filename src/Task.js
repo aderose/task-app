@@ -45,6 +45,7 @@ export default class Task {
         // open the edit task form
         pubsub.publish('showForm', {
           formName: '.add-task-form',
+          type: 'updateTask',
           id: this.id,
           defaults: {
             title: this.title,

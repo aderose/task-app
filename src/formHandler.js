@@ -11,7 +11,7 @@ const formHandler = () => {
     cancelName,
     headerName,
   }) {
-    forms[formName] = new Form({
+    forms[`${formName}${type}`] = new Form({
       type,
       containerName,
       formName,
@@ -20,12 +20,13 @@ const formHandler = () => {
     });
   }
 
-  function showForm({ formName, id, defaults }) {
-    if (forms[formName]) forms[formName].show({ id, defaults });
+  function showForm({ formName, type, id, defaults }) {
+    if (forms[`${formName}${type}`])
+      forms[`${formName}${type}`].show({ id, defaults });
   }
 
-  function hideForm({ formName }) {
-    if (forms[formName]) forms[formName].hide();
+  function hideForm({ formName, type }) {
+    if (forms[`${formName}${type}`]) forms[`${formName}${type}`].hide();
   }
 
   // create a form and store it in the forms object

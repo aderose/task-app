@@ -133,9 +133,9 @@ export default function listHandler() {
     // show the form and listen for a submission event
     const defaults = {};
     defaults[taskList.id] = taskList.name;
-
     pubsub.publish('showForm', {
       formName: `.update-${taskList.id}`,
+      type: 'updateList',
       id: taskList.id,
       defaults,
     });
@@ -168,7 +168,10 @@ export default function listHandler() {
   // make a new menu selection
   function makeMenuSelection(list) {
     selectList(list);
-    pubsub.publish('hideForm', '.add-list-form');
+    pubsub.publish('hideForm', {
+      formName: '.add-list-form',
+      type: 'createList',
+    });
   }
 
   function taskListUpdated() {
@@ -221,6 +224,7 @@ export default function listHandler() {
     fn: () => {
       pubsub.publish('showForm', {
         formName: '.add-list-form',
+        type: 'createList',
         defaults: {
           'add-list': 'Add',
         },
@@ -244,6 +248,7 @@ export default function listHandler() {
     fn: () =>
       pubsub.publish('showForm', {
         formName: '.add-task-form',
+        type: 'createTask',
         defaults: {
           submit: 'Add',
         },

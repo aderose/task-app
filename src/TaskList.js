@@ -75,6 +75,7 @@ class TaskList {
     const input = tagFactory.createTag('input', {
       type: 'text',
       class: 'update-list-input',
+      autocomplete: 'off',
       name: 'list-name',
       id: this.id,
     });
