@@ -14,6 +14,7 @@ export default class TaskElement {
     this.dateTag = this.createDateTag();
     this.headerTag = this.createHeaderTag();
     this.textTag = this.createTextTag();
+    if (this.isComplete) this.setStatus(this.isComplete);
     this.container = this.createContainer();
   }
 
@@ -37,9 +38,7 @@ export default class TaskElement {
 
   // create paragraph element containing the task-text
   createTextTag() {
-    const tag = tagFactory.createTag('p', { class: 'task-text' }, this.title);
-    if (this.isComplete) this.updateStatus();
-    return tag;
+    return tagFactory.createTag('p', { class: 'task-text' }, this.title);
   }
 
   // create a formatted date
